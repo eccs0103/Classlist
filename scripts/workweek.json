@@ -1,0 +1,149 @@
+{
+	"weekdays": [
+		{
+			"title": "Երկուշաբթի",
+			"subjects": [
+				{
+					"title": "Ռուսերեն",
+					"description": "Լսարան 206",
+					"start": 34200000,
+					"duration": 2400000,
+					"recess": 300000
+				},
+				{
+					"title": "ԷՀՄ և ծրագրավորում (գործ.)",
+					"description": "Լսարան 217",
+					"start": 39900000,
+					"duration": 2400000,
+					"recess": 300000
+				},
+				{
+					"title": "ԷՀՄ և ծրագրավորում (դասախ.)",
+					"description": "Լսարան 315",
+					"start": 46200000,
+					"duration": 2400000,
+					"recess": 300000
+				},
+				{
+					"title": "Անգլերեն",
+					"description": "Լսարան 213",
+					"start": 52200000,
+					"duration": 2400000,
+					"recess": 300000
+				}
+			]
+		},
+		{
+			"title": "Երեքշաբթի",
+			"subjects": [
+				{
+					"title": "Մաթեմատիկական անալիզ (դասախ.)",
+					"description": "Լսարան 114",
+					"start": 120600000,
+					"duration": 2400000,
+					"recess": 300000
+				},
+				{
+					"title": "Դիսկրետ մաթեմատիկա (գործ.)",
+					"description": "Լսարան 207",
+					"start": 126300000,
+					"duration": 2400000,
+					"recess": 300000
+				},
+				{
+					"title": "Անգլերեն",
+					"description": "Լսարան 209",
+					"start": 132600000,
+					"duration": 2400000,
+					"recess": 300000
+				}
+			]
+		},
+		{
+			"title": "Չորեքշաբթի",
+			"subjects": [
+				{
+					"title": "Ֆիզկուլտուրա",
+					"description": "Մարզադահլիճ",
+					"start": 207000000,
+					"duration": 2400000,
+					"recess": 300000
+				},
+				{
+					"title": "Հայոց պատմություն",
+					"description": "Լսարան 108",
+					"start": 212700000,
+					"duration": 2400000,
+					"recess": 300000
+				},
+				{
+					"title": "Հայոց լեզու",
+					"description": "Լսարան 305",
+					"start": 225000000,
+					"duration": 2400000,
+					"recess": 300000
+				}
+			]
+		},
+		{
+			"title": "Հինգշաբթի",
+			"subjects": [
+				{
+					"title": "Մաթեմատիկական անալիզ (դասախ.)",
+					"description": "Լսարան 114",
+					"start": 299100000,
+					"duration": 2400000,
+					"recess": 300000
+				},
+				{
+					"title": "Մաթեմատիկական անալիզ (գործ.)",
+					"description": "Լսարան 101",
+					"start": 305400000,
+					"duration": 2400000,
+					"recess": 300000
+				},
+				{
+					"title": "Ռուսերեն",
+					"description": "Լսարան 209",
+					"start": 311400000,
+					"duration": 2400000,
+					"recess": 300000
+				}
+			]
+		},
+		{
+			"title": "Ուրբաթ",
+			"subjects": [
+				{
+					"title": "Հանրահաշիվ",
+					"description": "Լսարան 108",
+					"start": 379800000,
+					"duration": 2400000,
+					"recess": 300000
+				},
+				{
+					"title": "ԷՀՄ և ծրագրավորում (գործ.)",
+					"description": "Լսարան 216",
+					"start": 385500000,
+					"duration": 2400000,
+					"recess": 300000
+				},
+				{
+					"title": "Դիսկրետ մաթեմատիկա (դասախ.)",
+					"description": "Լսարան 108",
+					"start": 391800000,
+					"duration": 2400000,
+					"recess": 300000
+				}
+			]
+		},
+		{
+			"title": "Շաբաթ",
+			"subjects": []
+		},
+		{
+			"title": "Կիրակի",
+			"subjects": []
+		}
+	]
+}
