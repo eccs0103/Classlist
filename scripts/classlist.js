@@ -45,9 +45,6 @@ const divNext = (/** @type {HTMLDivElement} */ (document.querySelector(`div#next
 const h1NextTitle = (/** @type {HTMLHeadingElement} */ (divNext.querySelector(`h1.-title`)));
 const h3NextDescription = (/** @type {HTMLHeadingElement} */ (divNext.querySelector(`h3.-description`)));
 
-const hightlight = Color.parse(getComputedStyle(document.documentElement).getPropertyValue(`--color-highlight`), ColorFormat.HSL);
-const standart = Color.parse(getComputedStyle(divCurrent).backgroundColor, ColorFormat.RGB);
-
 /**
  * @param {Number} moment 
  */
@@ -78,7 +75,7 @@ function render(moment) {
 		} else throw new Error(`Invalid timespan type: '${current}'.`);
 	})();
 	const percent = (moment - current.start) / current.duration;
-	divCurrent.style.background = `linear-gradient(90deg, ${hightlight.toString()} ${percent * 100}%, ${standart.toString()} ${(1 - percent) * 100}%)`;
+	divCurrent.style.background = `linear-gradient(90deg, var(--color-highlight) ${percent * 100}%, var(--color-foreground) ${(1 - percent) * 100}%)`;
 	const [hours, minutes, seconds] = Timespan.toTime(current.end - moment);
 	h3CurrentDescription.innerText += `\nԴեռ կա ${hours} ժամ, ${minutes} րոպե և ${seconds} վայրկյան`;
 
