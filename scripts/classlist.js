@@ -46,9 +46,13 @@ const h1NextTitle = (/** @type {HTMLHeadingElement} */ (divNext.querySelector(`h
 const h3NextDescription = (/** @type {HTMLHeadingElement} */ (divNext.querySelector(`h3.-description`)));
 
 /**
- * @param {Number} moment 
+ * @param {Number} offset 
  */
-function render(moment) {
+function render(offset) {
+	let moment = (() => {
+		const date = new Date();
+		return date.valueOf() - date.getTimezoneOffset() * 60 * 1000;
+	})();
 	moment %= workweek.weekdays.length * Weekday.max;
 
 	{
@@ -60,10 +64,20 @@ function render(moment) {
 		moment = integer * Weekday.max + fractional;
 	}
 
-	const index = timespans.findIndex(timespan => timespan.start <= moment && moment < timespan.end);
-	if (index == -1) {
-		throw new ReferenceError(`Can't reach the timespan for current moment: '${moment}'.`);
-	}
+	const index = (() => {
+		let index = timespans.findIndex(timespan => timespan.start <= moment && moment < timespan.end);
+		if (index == -1) {
+			throw new ReferenceError(`Can't reach the timespan for current moment: '${moment}'.`);
+		}
+		index += offset;
+		if (index < 0) {
+			index += timespans.length;
+		} else if (index >= timespans.length) {
+			index -= timespans.length;
+		}
+		return index;
+	})();
+
 	const current = timespans[index];
 	[h1CurrentTitle.innerText, h3CurrentDescription.innerText] = (() => {
 		if (current instanceof Freedom) {
@@ -74,8 +88,8 @@ function render(moment) {
 			return [`Դասամիջոց`, `Հանգտացեք`];
 		} else throw new Error(`Invalid timespan type: '${current}'.`);
 	})();
-	const percent = (moment - current.start) / current.duration;
-	divCurrent.style.background = `linear-gradient(90deg, var(--color-highlight) ${percent * 100}%, var(--color-foreground) ${(1 - percent) * 100}%)`;
+	const currentPercent = (moment - current.start) / current.duration;
+	divCurrent.style.setProperty(`--precent-filled-part`, `${currentPercent * 100}%`);
 	const [hours, minutes, seconds] = Timespan.toTime(current.end - moment);
 	h3CurrentDescription.innerText += `\nԴեռ կա ${hours} ժամ, ${minutes} րոպե և ${seconds} վայրկյան`;
 
@@ -89,13 +103,32 @@ function render(moment) {
 			return [`Դասամիջոց`, `Հանգտացեք`];
 		} else throw new Error(`Invalid timespan type: '${next}'.`);
 	})();
+	const nextPercent = (moment - next.start) / next.duration;
+	divNext.style.setProperty(`--precent-filled-part`, `${nextPercent * 100}%`);
 }
 
+const buttonNow = (/** @type {HTMLButtonElement} */ (document.querySelector(`button#now`)));
+buttonNow.addEventListener(`click`, (event) => {
+	offset = 0;
+	configure();
+});
+
+const buttonBefore = (/** @type {HTMLButtonElement} */ (document.querySelector(`button#before`)));
+buttonBefore.addEventListener(`click`, (event) => {
+	offset--;
+	configure();
+});
+
+const buttonAfter = (/** @type {HTMLButtonElement} */ (document.querySelector(`button#after`)));
+buttonAfter.addEventListener(`click`, (event) => {
+	offset++;
+	configure();
+});
+
+let offset = 0;
+
 function configure() {
-	render((() => {
-		const date = new Date();
-		return date.valueOf() - date.getTimezoneOffset() * 60 * 1000;
-	})());
+	render(offset);
 }
 
 configure();

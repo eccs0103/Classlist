@@ -1,0 +1,67 @@
+body {
+	position: fixed;
+	inset: 0;
+	place-items: center;
+	display: grid;
+	gap: var(--size-large-gap);
+	padding: var(--size-large-gap);
+}
+
+body * {
+	transition: 0.2s;
+}
+
+div:where(#current, #next) {
+	width: 100%;
+	height: 100%;
+	text-align: center;
+}
+
+div#current {
+	grid-area: current-panel;
+}
+
+div#next {
+	grid-area: next-panel;
+}
+
+button#now {
+	grid-area: now-button;
+}
+
+button#before {
+	grid-area: before-button;
+}
+
+button#after {
+	grid-area: after-button;
+}
+
+@media screen and (orientation: landscape) {
+	body {
+		grid-template:
+			'current-panel now-button next-panel' 1fr
+			'current-panel before-button next-panel' max-content
+			'current-panel after-button next-panel' max-content
+			/ 1fr max-content 1fr;
+	}
+}
+
+@media screen and (orientation: portrait) {
+	body {
+		grid-template:
+			'current-panel current-panel current-panel' 1fr
+			'before-button after-button now-button' max-content
+			'next-panel next-panel next-panel' 1fr
+			/ max-content max-content 1fr;
+	}
+}
+
+/*  */
+
+div:where(#current, #next) > div.-container > * {
+	background-image: linear-gradient(90deg, var(--color-highlight) var(--precent-filled-part), var(--color-text) 0%);
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+}

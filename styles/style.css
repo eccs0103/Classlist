@@ -68,27 +68,37 @@ body {
 	display: none !important;
 }
 
-*.layer,
-*.depth {
-	padding: var(--size-gap);
+*.with-horizontal-padding,
+*.with-padding {
+	padding-inline: var(--size-gap);
+}
+
+*.with-vertical-padding,
+*.with-padding {
+	padding-block: var(--size-gap);
+}
+
+*.with-horizontal-gap,
+*.with-gap {
+	row-gap: var(--size-gap);
+}
+
+*.with-vertical-gap,
+*.with-gap {
+	column-gap: var(--size-gap);
 }
 
 *.flex {
 	display: flex;
 }
 
-*.quadratic {
-	border-radius: 0 !important;
+*.flex.column {
+	flex-direction: column;
 }
 
-*.without-inline-padding,
-*.without-padding {
-	padding-inline: 0;
-}
-
-*.without-block-padding,
-*.without-padding {
-	padding-block: 0;
+*.flex.centered {
+	justify-content: center;
+	align-items: center;
 }
 
 *.contents {
@@ -187,21 +197,10 @@ dialog {
 	max-height: calc(100vh - 2 * var(--size-large-gap));
 	height: fit-content;
 	margin: auto;
-	padding: var(--size-gap);
 }
 
 dialog:not([open]) {
 	display: none !important;
-}
-
-dialog.pop-up {
-	display: flex;
-	flex-direction: column;
-	gap: var(--size-gap);
-}
-
-dialog.pop-up div.header {
-	justify-content: center;
 }
 
 dialog.pop-up div.header:empty {
@@ -213,11 +212,6 @@ dialog.pop-up div.main {
 	overflow-wrap: anywhere;
 }
 
-dialog.pop-up div.footer {
-	justify-content: center;
-	gap: var(--size-gap);
-}
-
 dialog.pop-up div.footer:empty {
 	display: none;
 }
@@ -225,6 +219,7 @@ dialog.pop-up div.footer:empty {
 div#debug {
 	position: fixed;
 	inset: 0 0 auto auto;
+	text-align: right;
 }
 
 *.grid-line {
@@ -274,8 +269,10 @@ table td {
 	padding: 0.25em 0.5em;
 }
 
-img.avatar {
-	aspect-ratio: 1;
+img {
+	max-width: 100%;
+	max-height: 100%;
+	object-fit: contain;
 }
 
 img.icon {
@@ -330,64 +327,4 @@ code > span::before {
 ::-webkit-scrollbar,
 ::-webkit-scrollbar-thumb {
 	border-radius: 50vmin;
-}
-
-/* Local */
-body {
-	place-items: center;
-	display: grid;
-	gap: var(--size-large-gap);
-	padding: calc(var(--size-large-gap) * 1);
-}
-
-body * {
-	transition: 0.2s;
-}
-
-body > div#current,
-body > div#next {
-	width: 100%;
-	height: 100%;
-	display: grid;
-	grid-template-rows: auto auto;
-}
-
-body > div#current,
-body > div#next {
-	text-align: center;
-}
-
-body > button > img[alt="Then"] {
-	height: calc(var(--size-standart) * 1.5);
-	transform: rotateZ(45deg);
-}
-
-@media screen and (orientation: landscape) {
-	body {
-		grid-template-columns: 1fr max-content 1fr;
-	}
-
-	body > div#current,
-	body > div#next {
-		width: 100%;
-	}
-
-	body > button > img[alt="Then"] {
-		transform: rotateZ(0deg);
-	}
-}
-
-@media screen and (orientation: portrait) {
-	body {
-		grid-template-rows: 1fr max-content 1fr;
-	}
-
-	body > div#current,
-	body > div#next {
-		height: 100%;
-	}
-
-	body > button > img[alt="Then"] {
-		transform: rotateZ(90deg);
-	}
 }

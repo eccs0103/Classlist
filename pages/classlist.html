@@ -6,25 +6,38 @@
 	<meta http-equiv="Content-Type: text/html">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Classlist</title>
+	<link rel="shortcut icon" href="../resources/list.png" media="(prefers-color-scheme: light)">
+	<link rel="shortcut icon" href="../resources/list (inverted).png" media="(prefers-color-scheme: dark)">
 	<link rel="stylesheet" href="../styles/style.css">
 	<link rel="stylesheet" href="../styles/themes/material.css">
+	<link rel="stylesheet" href="../styles/local/classlist.css">
 	<script src="../scripts/modules/application.js" defer></script>
 	<script src="../scripts/structure.js" defer></script>
 	<script src="../scripts/modules/color.js" defer></script>
 	<script src="../scripts/classlist.js" defer></script>
 </head>
 
-<body style="position: fixed; inset: 0;">
-	<div id="current" class="layer">
-		<h1 class="-title" style="align-self: end;"></h1>
-		<h3 class="-description" style="align-self: start;"></h3>
+<body>
+	<div id="current" class="layer rounded flex centered with-padding">
+		<div class="flex column centered -container">
+			<h1 class="-title"></h1>
+			<h3 class="-description"></h3>
+		</div>
 	</div>
-	<button disabled class="layer flex">
-		<img src="../resources/forward.png" alt="Then" class="icon">
+	<button id="now" class="layer rounded flex centered with-padding">
+		<img src="../resources/current.png" alt="Now" class="icon">
 	</button>
-	<div id="next" class="layer">
-		<h1 class="-title" style="align-self: end;"></h1>
-		<h3 class="-description" style="align-self: start;"></h3>
+	<button id="before" class="layer rounded flex centered with-padding">
+		<img src="../resources/backward.png" alt="Before" class="icon">
+	</button>
+	<button id="after" class="layer rounded flex centered with-padding">
+		<img src="../resources/forward.png" alt="After" class="icon">
+	</button>
+	<div id="next" class="layer rounded flex centered">
+		<div class="flex column centered -container with-padding">
+			<h1 class="-title"></h1>
+			<h3 class="-description"></h3>
+		</div>
 	</div>
 </body>
 
