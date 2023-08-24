@@ -107,11 +107,6 @@ body *::placeholder {
 	filter: invert(1);
 }
 
-button,
-*[role="button"] {
-	color: var(--color-highlight);
-}
-
 *[role="combobox"] {
 	color: var(--color-text) !important;
 }
@@ -176,7 +171,7 @@ dialog::backdrop {
 	background-color: rgba(0, 0, 0, 75%);
 }
 
-div#debug {
+dialog.console {
 	font-family: "Consolas", monospace;
 }
 
@@ -195,7 +190,7 @@ mark,
 	color: var(--color-warn);
 }
 
-*.alert {
+*.invalid {
 	color: var(--color-error);
 }
 

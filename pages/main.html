@@ -5,47 +5,26 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="Content-Type: text/html; charset=UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="application-name" content="Classlist">
-	<meta name="author" content="Adaptive Core">
-	<meta name="description" content=""> <!-- TODO -->
-	<meta name="keywords" content=""> <!-- TODO -->
-	<title>Classlist</title>
-	<link rel="shortcut icon" href="../resources/list.png" media="(prefers-color-scheme: light)">
-	<link rel="shortcut icon" href="../resources/list (inverted).png" media="(prefers-color-scheme: dark)">
+	<meta name="application-name" content="">
+	<meta name="author" content="">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<title>Main</title>
+	<link rel="shortcut icon" href="" media="(prefers-color-scheme: light)">
+	<link rel="shortcut icon" href="" media="(prefers-color-scheme: dark)">
 	<link rel="stylesheet" href="../styles/style.css">
 	<link rel="stylesheet" href="../styles/themes/material.css">
-	<link rel="stylesheet" href="../styles/local/classlist.css">
+	<link rel="stylesheet" href="../styles/local/main.css">
 	<script src="../scripts/components/archive.js" defer></script>
 	<script src="../scripts/components/informant.js" defer></script>
 	<script src="../scripts/components/panel.js" defer></script>
 	<script src="../scripts/components/manager.js" defer></script>
 	<script src="../scripts/structure.js" defer></script>
-	<script src="../scripts/components/colors.js" defer></script>
-	<script src="../scripts/classlist.js" defer></script>
+	<script src="../scripts/main.js" defer></script>
 </head>
 
 <body>
-	<div id="current" class="layer rounded flex centered with-padding">
-		<div class="flex column centered -container">
-			<h1 class="-title"></h1>
-			<h3 class="-description"></h3>
-		</div>
-	</div>
-	<button id="now" class="layer rounded flex centered with-padding">
-		<img src="../resources/current.png" alt="Now" class="icon">
-	</button>
-	<button id="before" class="layer rounded flex centered with-padding">
-		<img src="../resources/backward.png" alt="Before" class="icon">
-	</button>
-	<button id="after" class="layer rounded flex centered with-padding">
-		<img src="../resources/forward.png" alt="After" class="icon">
-	</button>
-	<div id="next" class="layer rounded flex centered">
-		<div class="flex column centered -container with-padding">
-			<h1 class="-title"></h1>
-			<h3 class="-description"></h3>
-		</div>
-	</div>
+	<!-- Your code goes here -->
 	<dialog class="console layer rounded in-top in-right with-padding with-vertical-gap"></dialog>
 	<dialog class="pop-up layer rounded with-padding with-gap flex column">
 		<div class="header flex centered">
@@ -57,7 +36,7 @@
 			<input type="text" placeholder="Enter text..." class="depth rounded flex with-padding">
 		</div>
 	</dialog>
-	<ac-panel class="loader layer with-padding large-padding flex primary-centered" hidden>
+	<ac-panel class="loader layer with-padding large-padding flex primary-centered">
 		<div class="flex column primary-centered with-gap with-padding">
 			<img src="../resources/Circuit (Transparent).gif" alt="Logo">
 		</div>
