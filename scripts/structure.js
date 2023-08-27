@@ -8,38 +8,7 @@
 "use strict";
 
 //#region Activity
-/**
- * @typedef ActivityNotation
- * @property {Number} begin
- * @property {Number} duration
- */
-
 class Activity extends Timespan {
-	/**
-	 * @param {any} source 
-	 */
-	static import(source) {
-		const begin = Reflect.get(source, `begin`);
-		if (typeof (begin) !== `number`) {
-			throw new TypeError(`Property type ${typeof (begin)} is invalid`);
-		}
-
-		const duration = Reflect.get(source, `duration`);
-		if (typeof (duration) !== `number`) {
-			throw new TypeError(`Property type ${typeof (duration)} is invalid`);
-		}
-
-		return new Activity(begin, duration);
-	}
-	/**
-	 * @param {Activity} source 
-	 */
-	static export(source) {
-		const result = (/** @type {ActivityNotation} */ ({}));
-		result.begin = source.begin;
-		result.duration = source.duration;
-		return result;
-	}
 	/**
 	 * @param {Number} begin 
 	 * @param {Number} duration 
@@ -72,32 +41,7 @@ class Activity extends Timespan {
 }
 //#endregion
 //#region Freedom
-/**
- * @typedef {ActivityNotation} FreedomNotation
- */
-
 class Freedom extends Activity {
-	/**
-	 * @param {any} source 
-	 */
-	static import(source) {
-		try {
-			const base = Activity.import(source);
-			return new Freedom(base.begin, base.duration);
-		} catch (error) {
-			throw error;
-		}
-	}
-	/**
-	 * @param {Freedom} source 
-	 */
-	static export(source) {
-		const base = Activity.export(source);
-		const result = (/** @type {FreedomNotation} */ ({}));
-		result.begin = base.begin;
-		result.duration = base.duration;
-		return result;
-	}
 	/**
 	 * @param {Number} begin 
 	 * @param {Number} duration 
@@ -114,32 +58,7 @@ class Freedom extends Activity {
 }
 //#endregion
 //#region Recess
-/**
- * @typedef {ActivityNotation} RecessNotation
- */
-
 class Recess extends Activity {
-	/**
-	 * @param {any} source 
-	 */
-	static import(source) {
-		try {
-			const base = Activity.import(source);
-			return new Recess(base.begin, base.duration);
-		} catch (error) {
-			throw error;
-		}
-	}
-	/**
-	 * @param {Freedom} source 
-	 */
-	static export(source) {
-		const base = Activity.export(source);
-		const result = (/** @type {RecessNotation} */ ({}));
-		result.begin = base.begin;
-		result.duration = base.duration;
-		return result;
-	}
 	/**
 	 * @param {Number} begin 
 	 * @param {Number} duration 
@@ -156,47 +75,7 @@ class Recess extends Activity {
 }
 //#endregion
 //#region Task
-/**
- * @typedef $TaskNotation
- * @property {String} title
- * @property {String} description
- * 
- * @typedef {ActivityNotation & $TaskNotation} TaskNotation
- */
-
 class Task extends Activity {
-	/**
-	 * @param {any} source 
-	 */
-	static import(source) {
-		try {
-			const base = Activity.import(source);
-
-			const title = Reflect.get(source, `title`);
-			if (typeof (title) !== `string`) {
-				throw new TypeError(`Property type ${typeof (title)} is invalid`);
-			}
-
-			const description = Reflect.get(source, `description`);
-			if (typeof (description) !== `string`) {
-				throw new TypeError(`Property type ${typeof (description)} is invalid`);
-			}
-
-			return new Task(base.begin, base.duration, title, description);
-		} catch (error) {
-			throw error;
-		}
-	}
-	/**
-	 * @param {Freedom} source 
-	 */
-	static export(source) {
-		const base = Activity.export(source);
-		const result = (/** @type {TaskNotation} */ ({}));
-		result.begin = base.begin;
-		result.duration = base.duration;
-		return result;
-	}
 	/**
 	 * @param {Number} begin 
 	 * @param {Number} duration 
@@ -234,9 +113,8 @@ class Task extends Activity {
 //#region Subject
 /**
  * @typedef SubjectNotation
- * @property {String} title
- * @property {String} description
- * @property {Array<TaskNotation>} tasks
+ * @property {String} title 
+ * @property {String} description 
  */
 
 class Subject {
@@ -246,28 +124,15 @@ class Subject {
 	static import(source) {
 		const title = Reflect.get(source, `title`);
 		if (typeof (title) !== `string`) {
-			throw new TypeError(`Property type ${typeof (title)} is invalid`);
+			throw new TypeError(`Property title has invalid ${typeof (title)} type`);
 		}
 
 		const description = Reflect.get(source, `description`);
 		if (typeof (description) !== `string`) {
-			throw new TypeError(`Property type ${typeof (description)} is invalid`);
+			throw new TypeError(`Property description has invalid ${typeof (description)} type`);
 		}
-
-		let tasks = Reflect.get(source, `tasks`);
-		if (!(tasks instanceof Array)) {
-			throw new TypeError(`Property type ${tasks} is invalid`);
-		}
-		tasks = tasks.map((task) => {
-			try {
-				return Task.import(task);
-			} catch (error) {
-				throw error;
-			}
-		});
 
 		const result = new Subject(title, description);
-		result.tasks.push(...tasks);
 		return result;
 	}
 	/**
@@ -277,7 +142,6 @@ class Subject {
 		const result = (/** @type {SubjectNotation} */ ({}));
 		result.title = source.title;
 		result.description = source.description;
-		result.tasks = source.tasks.map((task) => Task.export(task));
 		return result;
 	}
 	/**
@@ -322,7 +186,11 @@ class Subject {
 //#endregion
 //#region Lesson
 /**
- * @typedef {SubjectNotation} LessonNotation
+ * @typedef {SubjectNotation & __LessonNotation__} LessonNotation
+ * 
+ * @typedef __LessonNotation__
+ * @property {Number} begin 
+ * @property {Number} duration
  */
 
 class Lesson extends Subject {
@@ -333,11 +201,18 @@ class Lesson extends Subject {
 		try {
 			const base = Subject.import(source);
 
-			const begin = base.tasks[0].begin;
+			const begin = Reflect.get(source, `begin`);
+			if (typeof (begin) !== `number`) {
+				throw new TypeError(`Property begin has invalid ${typeof (begin)} type`);
+			}
 
-			const duration = base.tasks[0].duration;
+			const duration = Reflect.get(source, `duration`);
+			if (typeof (duration) !== `number`) {
+				throw new TypeError(`Property duration has invalid ${typeof (duration)} type`);
+			}
 
-			return new Lesson(base.title, base.description, begin, duration);
+			const result = new Lesson(base.title, base.description, begin, duration);
+			return result;
 		} catch (error) {
 			throw error;
 		}
@@ -349,8 +224,9 @@ class Lesson extends Subject {
 		const base = Subject.export(source);
 		const result = (/** @type {LessonNotation} */ ({}));
 		result.title = base.title;
-		result.description = base.description;
-		result.tasks = base.tasks;
+		result.description = base.title;
+		result.begin = source.tasks[0].begin;
+		result.duration = source.tasks[0].duration;
 		return result;
 	}
 	/**
@@ -368,7 +244,12 @@ class Lesson extends Subject {
 //#endregion
 //#region Pair
 /**
- * @typedef {SubjectNotation} PairNotation
+ * @typedef {SubjectNotation & __PairNotation__} PairNotation
+ * 
+ * @typedef __PairNotation__
+ * @property {Number} begin 
+ * @property {Number} duration
+ * @property {Number} recess
  */
 
 class Pair extends Subject {
@@ -379,11 +260,23 @@ class Pair extends Subject {
 		try {
 			const base = Subject.import(source);
 
-			const begin = base.tasks[0].begin;
+			const begin = Reflect.get(source, `begin`);
+			if (typeof (begin) !== `number`) {
+				throw new TypeError(`Property begin has invalid ${typeof (begin)} type`);
+			}
 
-			const duration = base.tasks[0].duration;
+			const duration = Reflect.get(source, `duration`);
+			if (typeof (duration) !== `number`) {
+				throw new TypeError(`Property duration has invalid ${typeof (duration)} type`);
+			}
 
-			return new Pair(base.title, base.description, begin, duration);
+			const recess = Reflect.get(source, `recess`);
+			if (typeof (recess) !== `number`) {
+				throw new TypeError(`Property recess has invalid ${typeof (recess)} type`);
+			}
+
+			const result = new Pair(base.title, base.description, begin, duration, recess);
+			return result;
 		} catch (error) {
 			throw error;
 		}
@@ -395,8 +288,10 @@ class Pair extends Subject {
 		const base = Subject.export(source);
 		const result = (/** @type {PairNotation} */ ({}));
 		result.title = base.title;
-		result.description = base.description;
-		result.tasks = base.tasks;
+		result.description = base.title;
+		result.begin = source.tasks[0].begin;
+		result.duration = source.tasks[0].duration;
+		result.recess = source.tasks[1].begin - source.tasks[0].end;
 		return result;
 	}
 	/**
@@ -428,26 +323,42 @@ class Weekday {
 	static import(source) {
 		const title = Reflect.get(source, `title`);
 		if (typeof (title) !== `string`) {
-			throw new TypeError(`Property type ${typeof (title)} is invalid`);
+			throw new TypeError(`Property title has invalid ${typeof (title)} type`);
 		}
 
-		let subjects = Reflect.get(source, `subjects`);
-		if (!(subjects instanceof Array)) {
-			throw new TypeError(`Property type ${subjects} is invalid`);
+		const $subjects = Reflect.get(source, `subjects`);
+		if (!($subjects instanceof Array)) {
+			throw new TypeError(`Property subjects has invalid ${($subjects)} type`);
 		}
-		subjects = subjects.map((subject) => {
+		const subjects = $subjects.map((subject) => {
 			try {
-				return Subject.import(subject);
+				if (Reflect.has(subject, `recess`)) {
+					return Pair.import(subject);
+				} else {
+					return Lesson.import(subject);
+				}
 			} catch (error) {
 				throw error;
 			}
 		});
+
+		const result = new Weekday(title, ...subjects);
+		return result;
 	}
 	/**
 	 * @param {Weekday} source 
 	 */
 	static export(source) {
-
+		const result = (/** @type {WeekdayNotation} */ ({}));
+		result.title = source.title;
+		result.subjects = source.subjects.map((subject) => {
+			if (subject instanceof Pair) {
+				return Pair.export(subject);
+			} else {
+				return Lesson.export(subject);
+			}
+		});
+		return result;
 	}
 	/** @type {Number} */ static #begin = 0;
 	/** @readonly */ static get begin() {
@@ -495,16 +406,45 @@ class Weekday {
 }
 //#endregion
 //#region Workweek
+/**
+ * @typedef WorkweekNotation
+ * @property {Array<WeekdayNotation>} weekdays
+ */
+
 class Workweek {
+	/**
+	 * @param {WorkweekNotation} source 
+	 */
+	static import(source) {
+		const $weekdays = Reflect.get(source, `weekdays`);
+		if (!($weekdays instanceof Array)) {
+			throw new TypeError(`Property weekdays has invalid ${($weekdays)} type`);
+		}
+		const weekdays = $weekdays.map((weekday) => {
+			try {
+				return Weekday.import(weekday);
+			} catch (error) {
+				throw error;
+			}
+		});
+
+		const result = new Workweek(...weekdays);
+		return result;
+	}
+	/**
+	 * @param {Workweek} source 
+	 */
+	static export(source) {
+		const result = (/** @type {WorkweekNotation} */ ({}));
+		result.weekdays = source.weekdays.map((weekday) => Weekday.export(weekday));
+		return result;
+	}
 	/**
 	 * @param  {Array<Weekday>} weekdays 
 	 */
 	constructor(...weekdays) {
 		this.weekdays.push(...weekdays);
 	}
-	// /** @readonly */ get duration() {
-	// 	return this.weekdays.length * Weekday.duration;
-	// }
 	/** @type {Array<Weekday>} */ #weekdays = [];
 	/** @readonly */ get weekdays() {
 		return this.#weekdays;
@@ -608,6 +548,7 @@ if (!(metaApplicationName instanceof HTMLMetaElement)) {
 const title = metaApplicationName.content;
 
 /** @type {Archive<SettingsNotation>} */ const archiveSettings = new Archive(`${developer}.${title}.Settings`, Settings.export(new Settings()));
+/** @type {Archive<WorkweekNotation?>} */ const archivePreview = new Archive(`${developer}.${title}.Preview`, null);
 
 const settings = Settings.import(archiveSettings.data);
 const search = Manager.getSearch();

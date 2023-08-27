@@ -39,70 +39,29 @@ try {
 	const h3NextDescription = divNextContainer.appendChild(document.createElement(`h3`));
 	//#endregion
 	//#region Initialize
-	const workweek = (() => {
-		switch (search.get(`database`)) {
-			//#region 210
-			case `210`: return new Workweek(
-				new Weekday(`Երկուշաբթի`,
-					new Pair(`Հայոց պատմություն (դասախ.)`, `Լսարան NaN`, Timespan.parse(`09:30:00`).duration),
-					new Pair(`Ալգորիթմների տեսություն (դասախ.)`, `Լսարան NaN`, Timespan.parse(`11:05:00`).duration),
-					new Pair(`Մաթեմատիկական անալիզ (գործ.)`, `Լսարան NaN`, Timespan.parse(`12:50:00`).duration),
-				),
-				new Weekday(`Երեքշաբթի`,
-					new Pair(`Մաթեմատիկական անալիզ (գործ.)`, `Լսարան NaN`, Timespan.parse(`09:30:00`).duration),
-					new Pair(`Ալգորիթմների տեսություն (գործ.)`, `Լսարան NaN`, Timespan.parse(`11:05:00`).duration),
-					new Pair(`Հանրահաշիվ (դասախ.)`, `Լսարան NaN`, Timespan.parse(`12:50:00`).duration),
-				),
-				new Weekday(`Չորեքշաբթի`,
-					new Pair(`Մաթեմատիկական անալիզ (դասախ.)`, `Լսարան NaN`, Timespan.parse(`09:30:00`).duration),
-					new Pair(`Տվյալների կառուցվածքներ (դասախ.)`, `Լսարան NaN`, Timespan.parse(`12:50:00`).duration),
-				),
-				new Weekday(`Հինգշաբթի`,
-					new Pair(`Տվյալների կառուցվածքներ (գործ.)`, `Լսարան NaN`, Timespan.parse(`09:30:00`).duration),
-					new Pair(`Օպերացիոն համակարգեր (դասախ.)`, `Լսարան NaN`, Timespan.parse(`11:05:00`).duration),
-					new Pair(`Մաթեմատիկական անալիզ (դասախ.)`, `Լսարան NaN`, Timespan.parse(`12:50:00`).duration),
-				),
-				new Weekday(`Ուրբաթ`,
-					new Pair(`Հանրահաշիվ (դասախ.)`, `Լսարան NaN`, Timespan.parse(`09:30:00`).duration),
-					new Pair(`Հանրահաշիվ (գործ.)`, `Լսարան NaN`, Timespan.parse(`11:05:00`).duration),
-				),
-				new Weekday(`Շաբաթ`),
-				new Weekday(`Կիրակի`),
-			);
-			//#endregion
-			//#region 2.3
-			case `2.3`: return new Workweek(
-				new Weekday(`Երկուշաբթի`,
-					new Pair(`ՏԱ հիմունքներ (դասախ.)`, `Լսարան NaN`, Timespan.parse(`09:30:00`).duration),
-					new Pair(`Տվյալների կառուցվածքներ (գործ.)`, `Լսարան NaN`, Timespan.parse(`11:05:00`).duration),
-					new Pair(`Տվյալների կառուցվածքներ (դասախ.)`, `Լսարան NaN`, Timespan.parse(`12:50:00`).duration),
-				),
-				new Weekday(`Երեքշաբթի`,
-					new Pair(`Հաշվողական համակարգեր (գործ.)`, `Լսարան NaN`, Timespan.parse(`09:30:00`).duration),
-					new Pair(`Կոմպլեքս անալիզ (գործ.)`, `Լսարան NaN`, Timespan.parse(`11:05:00`).duration),
-					new Pair(`Ընդհանուր հանրահաշիվ (դասախ.)`, `Լսարան NaN`, Timespan.parse(`12:50:00`).duration),
-				),
-				new Weekday(`Չորեքշաբթի`,
-					new Pair(`Հայոց պատմություն (դասախ.)`, `Լսարան NaN`, Timespan.parse(`12:50:00`).duration),
-				),
-				new Weekday(`Հինգշաբթի`,
-					new Pair(`Ընդհանուր հանրահաշիվ (դասախ.)`, `Լսարան NaN`, Timespan.parse(`09:30:00`).duration),
-					new Pair(`Փիլիսոփայություն (սեմ.)`, `Լսարան NaN`, Timespan.parse(`11:05:00`).duration),
-					new Pair(`Կոմպլեքս անալիզ (դասախ.)`, `Լսարան NaN`, Timespan.parse(`12:50:00`).duration),
-				),
-				new Weekday(`Ուրբաթ`,
-					new Pair(`Ընդհանուր հանրահաշիվ (գործ.)`, `Լսարան NaN`, Timespan.parse(`09:30:00`).duration),
-					new Pair(`Հաշվողական համակարգեր (դասախ.)`, `Լսարան NaN`, Timespan.parse(`11:05:00`).duration),
-					new Pair(`Փիլիսոփայություն (դասախ.)`, `Լսարան NaN`, Timespan.parse(`12:50:00`).duration),
-				),
-				new Weekday(`Շաբաթ`),
-				new Weekday(`Կիրակի`),
-			);
-			//#endregion
-			default: throw new ReferenceError(`Database not detected`);
-		}
-	})();
+	const database = search.get(`database`);
+	switch (database) {
+		case `210`:
+		case `2.3`: {
+			Manager.load(new Promise(async (resolve, reject) => {
+				try {
+					const response = await fetch(`../database/${database}.json`);
+					const object = await response.json();
+					const workweek = Workweek.import(object);
+					const notation = Workweek.export(workweek);
+					archivePreview.data = notation;
+					resolve(undefined);
+				} catch (error) {
+					reject(error);
+				}
+			}));
+		} break;
+	}
 
+	if (archivePreview.data === null) {
+		throw new ReferenceError(`Classlist data not detected`);
+	}
+	/** @type {Workweek?} */ const workweek = Workweek.import(archivePreview.data);
 	const classlist = new Classlist(...workweek.toTimeline());
 
 	/**
