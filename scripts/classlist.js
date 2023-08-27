@@ -1,26 +1,18 @@
 // @ts-ignore
 /** @typedef {import("./structure.js")} */
-// @ts-ignore
-/** @typedef {import("./components/colors.js")} */
 
 "use strict";
 
 try {
 	//#region Definition
-	const divCurrent = document.querySelector(`div#current`);
-	if (!(divCurrent instanceof HTMLDivElement)) {
-		throw new TypeError(`Invalid element: ${divCurrent}`);
+	const divCurrentContainer = document.querySelector(`div#current > *.-container`);
+	if (!(divCurrentContainer instanceof HTMLDivElement)) {
+		throw new TypeError(`Invalid element: ${divCurrentContainer}`);
 	}
 
-	const h1CurrentTitle = divCurrent.querySelector(`h1.-title`);
-	if (!(h1CurrentTitle instanceof HTMLHeadingElement)) {
-		throw new TypeError(`Invalid element: ${h1CurrentTitle}`);
-	}
-
-	const h3CurrentDescription = divCurrent.querySelector(`h3.-description`);
-	if (!(h3CurrentDescription instanceof HTMLHeadingElement)) {
-		throw new TypeError(`Invalid element: ${h3CurrentDescription}`);
-	}
+	const h6CurrentSubtitle = divCurrentContainer.appendChild(document.createElement(`h5`));
+	const h1CurrentTitle = divCurrentContainer.appendChild(document.createElement(`h1`));
+	const h3CurrentDescription = divCurrentContainer.appendChild(document.createElement(`h3`));
 
 	const buttonBefore = document.querySelector(`button#before`);
 	if (!(buttonBefore instanceof HTMLButtonElement)) {
@@ -37,137 +29,127 @@ try {
 		throw new TypeError(`Invalid element: ${buttonNow}`);
 	}
 
-	const divNext = document.querySelector(`div#next`);
-	if (!(divNext instanceof HTMLDivElement)) {
-		throw new TypeError(`Invalid element: ${divNext}`);
+	const divNextContainer = document.querySelector(`div#next > *.-container`);
+	if (!(divNextContainer instanceof HTMLDivElement)) {
+		throw new TypeError(`Invalid element: ${divNextContainer}`);
 	}
 
-	const h1NextTitle = divNext.querySelector(`h1.-title`);
-	if (!(h1NextTitle instanceof HTMLHeadingElement)) {
-		throw new TypeError(`Invalid element: ${h1NextTitle}`);
-	}
-
-	const h3NextDescription = divNext.querySelector(`h3.-description`);
-	if (!(h3NextDescription instanceof HTMLHeadingElement)) {
-		throw new TypeError(`Invalid element: ${h3NextDescription}`);
-	}
+	const h6NextSubtitle = divNextContainer.appendChild(document.createElement(`h5`));
+	const h1NextTitle = divNextContainer.appendChild(document.createElement(`h1`));
+	const h3NextDescription = divNextContainer.appendChild(document.createElement(`h3`));
 	//#endregion
 	//#region Initialize
 	const workweek = new Workweek(
 		new Weekday(`Երկուշաբթի`,
-			new Pair(`Ռուսերեն`, `Լսարան 206`, Timespan.parse(`09:30:00`)),
-			new Pair(`ԷՀՄ և ծրագրավորում (գործ.)`, `Լսարան 217`, Timespan.parse(`11:05:00`)),
-			new Pair(`ԷՀՄ և ծրագրավորում (դասախ.)`, `Լսարան 315`, Timespan.parse(`12:50:00`)),
-			new Pair(`Անգլերեն`, `Լսարան 213`, Timespan.parse(`14:30:00`)),
+			new Pair(`Ռուսերեն`, `Լսարան 206`, Timespan.parse(`09:30:00`).duration),
+			new Pair(`ԷՀՄ և ծրագրավորում (գործ.)`, `Լսարան 217`, Timespan.parse(`11:05:00`).duration),
+			new Pair(`ԷՀՄ և ծրագրավորում (դասախ.)`, `Լսարան 315`, Timespan.parse(`12:50:00`).duration),
+			new Pair(`Անգլերեն`, `Լսարան 213`, Timespan.parse(`14:30:00`).duration),
 		),
 		new Weekday(`Երեքշաբթի`,
-			new Pair(`Մաթեմատիկական անալիզ (դասախ.)`, `Լսարան 114`, Timespan.parse(`09:30:00`)),
-			new Pair(`Դիսկրետ մաթեմատիկա (գործ.)`, `Լսարան 207`, Timespan.parse(`11:05:00`)),
-			new Pair(`Անգլերեն`, `Լսարան 209`, Timespan.parse(`12:50:00`)),
+			new Pair(`Մաթեմատիկական անալիզ (դասախ.)`, `Լսարան 114`, Timespan.parse(`09:30:00`).duration),
+			new Pair(`Դիսկրետ մաթեմատիկա (գործ.)`, `Լսարան 207`, Timespan.parse(`11:05:00`).duration),
+			new Pair(`Անգլերեն`, `Լսարան 209`, Timespan.parse(`12:50:00`).duration),
 		),
 		new Weekday(`Չորեքշաբթի`,
-			new Pair(`Ֆիզկուլտուրա`, `Մարզադահլիճ`, Timespan.parse(`09:30:00`)),
-			new Pair(`Հայոց պատմություն`, `Լսարան 108`, Timespan.parse(`11:05:00`)),
-			new Pair(`Հայոց լեզու`, `Լսարան 305`, Timespan.parse(`14:30:00`)),
+			new Pair(`Ֆիզկուլտուրա`, `Մարզադահլիճ`, Timespan.parse(`09:30:00`).duration),
+			new Pair(`Հայոց պատմություն`, `Լսարան 108`, Timespan.parse(`11:05:00`).duration),
+			new Pair(`Հայոց լեզու`, `Լսարան 305`, Timespan.parse(`14:30:00`).duration),
 		),
 		new Weekday(`Հինգշաբթի`,
-			new Pair(`Մաթեմատիկական անալիզ (դասախ.)`, `Լսարան 114`, Timespan.parse(`11:05:00`)),
-			new Pair(`Մաթեմատիկական անալիզ (գործ.)`, `Լսարան 101`, Timespan.parse(`12:50:00`)),
-			new Pair(`Ռուսերեն`, `Լսարան 209`, Timespan.parse(`14:30:00`)),
+			new Pair(`Մաթեմատիկական անալիզ (դասախ.)`, `Լսարան 114`, Timespan.parse(`11:05:00`).duration),
+			new Pair(`Մաթեմատիկական անալիզ (գործ.)`, `Լսարան 101`, Timespan.parse(`12:50:00`).duration),
+			new Pair(`Ռուսերեն`, `Լսարան 209`, Timespan.parse(`14:30:00`).duration),
 		),
 		new Weekday(`Ուրբաթ`,
-			new Pair(`Հանրահաշիվ`, `Լսարան 108`, Timespan.parse(`09:30:00`)),
-			new Pair(`ԷՀՄ և ծրագրավորում (գործ.)`, `Լսարան 216`, Timespan.parse(`11:05:00`)),
-			new Pair(`Դիսկրետ մաթեմատիկա (դասախ.)`, `Լսարան 108`, Timespan.parse(`12:50:00`)),
+			new Pair(`Հանրահաշիվ`, `Լսարան 108`, Timespan.parse(`09:30:00`).duration),
+			new Pair(`ԷՀՄ և ծրագրավորում (գործ.)`, `Լսարան 216`, Timespan.parse(`11:05:00`).duration),
+			new Pair(`Դիսկրետ մաթեմատիկա (դասախ.)`, `Լսարան 108`, Timespan.parse(`12:50:00`).duration),
 		),
 		new Weekday(`Շաբաթ`),
 		new Weekday(`Կիրակի`),
 	);
-	const timespans = workweek.toTimespans();
+
+	const classlist = new Classlist(...workweek.toTimeline());
 
 	/**
-	 * @param {Number} offset 
+	 * @param {Number} moment 
 	 */
-	function render(offset) {
-		let moment = (() => {
-			const date = new Date();
-			return date.valueOf() - date.getTimezoneOffset() * 60 * 1000;
-		})();
-		moment %= workweek.weekdays.length * Weekday.max;
+	function fix(moment) {
+		const date = new Date(moment);
+		date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+		date.setDate(date.getDate() - 4);
+		return date.valueOf();
+	};
 
-		let integer = Math.floor(moment / Weekday.max) - 4;
-		if (integer < 0) {
-			integer += workweek.weekdays.length;
+	/**
+	 * @param {Number} moment 
+	 */
+	function unfix(moment) {
+		const date = new Date(moment);
+		date.setDate(date.getDate() + 4);
+		date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
+		return date.valueOf();
+	};
+
+	let offset = 0;
+	const render = function () {
+		const moment = fix(Date.now());
+
+		const index = classlist.find(moment) + offset;
+
+		/// Current
+		const current = classlist.get(index);
+		h6CurrentSubtitle.innerText = new Date(unfix(current.begin)).toLocaleDateString();
+		h3CurrentDescription.innerText = ``;
+		if (current instanceof Freedom) {
+			h1CurrentTitle.innerText = `Դասեր չկան`;
+		} else if (current instanceof Recess) {
+			h1CurrentTitle.innerText = `Դասամիջոց`;
+		} else if (current instanceof Task) {
+			h1CurrentTitle.innerText = current.title;
+			h3CurrentDescription.innerText += current.description;
+		} else throw new TypeError(`Invalid type for ${current}`);
+		divCurrentContainer.style.setProperty(`--filled-ratio`, `${Math.min(Math.max(0, (moment - current.begin) / current.duration), 1) * 100}%`);
+		const { negativity, hours, minutes, seconds } = Timespan.viaDuration(current.end - moment);
+		if (h3CurrentDescription.innerText && !h3CurrentDescription.innerText.endsWith(`\n`)) {
+			h3CurrentDescription.innerText += `\n`;
 		}
-		const fractional = moment % Weekday.max;
-		moment = integer * Weekday.max + fractional;
+		h3CurrentDescription.innerText += (negativity ? `Անցել է` : `Դեռ կա`);
+		h3CurrentDescription.innerText += ` ${hours} ժամ, ${minutes} րոպե և ${seconds} վայրկյան`;
 
-		const index = (() => {
-			let index = timespans.findIndex(timespan => timespan.start <= moment && moment < timespan.end);
-			if (index == -1) {
-				throw new ReferenceError(`Can't reach the timespan for current moment: '${moment}'.`);
-			}
-			index += offset;
-			if (index < 0) {
-				index += timespans.length;
-			} else if (index >= timespans.length) {
-				index -= timespans.length;
-			}
-			return index;
-		})();
+		/// Next
+		const next = classlist.get(index + 1);
+		h6NextSubtitle.innerText = new Date(unfix(next.begin)).toLocaleDateString();
+		h3NextDescription.innerText = ``;
+		if (next instanceof Freedom) {
+			h1NextTitle.innerText = `Դասեր չկան`;
+		} else if (next instanceof Recess) {
+			h1NextTitle.innerText = `Դասամիջոց`;
+		} else if (next instanceof Task) {
+			h1NextTitle.innerText = next.title;
+			h3NextDescription.innerText += next.description;
+		} else throw new TypeError(`Invalid type for ${next}`);
+		divNextContainer.style.setProperty(`--filled-ratio`, `${Math.min(Math.max(0, (moment - next.begin) / next.duration), 1) * 100}%`);
+	};
 
-		const current = timespans[index];
-		[h1CurrentTitle.innerText, h3CurrentDescription.innerText] = (() => {
-			if (current instanceof Freedom) {
-				return [`Դասեր չկան`, `Դասերը դեռ չեն սկսվել`];
-			} else if (current instanceof Task) {
-				return [current.title, current.description];
-			} else if (current instanceof Recess) {
-				return [`Դասամիջոց`, `Հանգտացեք`];
-			} else throw new Error(`Invalid timespan type: '${current}'.`);
-		})();
-		const currentPercent = (moment - current.start) / current.duration;
-		divCurrent.style.setProperty(`--precent-filled-part`, `${currentPercent * 100}%`);
-		const [hours, minutes, seconds] = Timespan.toTime(current.end - moment);
-		h3CurrentDescription.innerText += `\nԴեռ կա ${hours} ժամ, ${minutes} րոպե և ${seconds} վայրկյան`;
-
-		const next = timespans[index + 1] ?? timespans[0];
-		[h1NextTitle.innerText, h3NextDescription.innerText] = (() => {
-			if (next instanceof Freedom) {
-				return [`Դասեր չկան`, `Դասերը դեռ չեն սկսվել`];
-			} else if (next instanceof Task) {
-				return [next.title, next.description];
-			} else if (next instanceof Recess) {
-				return [`Դասամիջոց`, `Հանգտացեք`];
-			} else throw new Error(`Invalid timespan type: '${next}'.`);
-		})();
-		const nextPercent = (moment - next.start) / next.duration;
-		divNext.style.setProperty(`--precent-filled-part`, `${nextPercent * 100}%`);
-	}
+	render();
+	setInterval(render, 1000);
 
 	buttonNow.addEventListener(`click`, (event) => {
 		offset = 0;
-		configure();
+		render();
 	});
 
 	buttonBefore.addEventListener(`click`, (event) => {
 		offset--;
-		configure();
+		render();
 	});
 
 	buttonAfter.addEventListener(`click`, (event) => {
 		offset++;
-		configure();
+		render();
 	});
-
-	let offset = 0;
-
-	function configure() {
-		render(offset);
-	}
-
-	configure();
-	setInterval(configure, 1 * 1000);
 	//#endregion
 } catch (error) {
 	Manager.prevent(error);

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="system">
+<html lang="hy" data-theme="system">
 
 <head>
 	<meta charset="UTF-8">
@@ -19,32 +19,29 @@
 	<script src="../scripts/components/informant.js" defer></script>
 	<script src="../scripts/components/panel.js" defer></script>
 	<script src="../scripts/components/manager.js" defer></script>
+	<script src="../scripts/components/timespan.js" defer></script>
 	<script src="../scripts/structure.js" defer></script>
-	<script src="../scripts/components/colors.js" defer></script>
 	<script src="../scripts/classlist.js" defer></script>
 </head>
 
 <body>
 	<div id="current" class="layer rounded flex centered with-padding">
-		<div class="flex column centered -container">
-			<h1 class="-title"></h1>
-			<h3 class="-description"></h3>
-		</div>
+		<div class="flex column centered -container"></div>
 	</div>
-	<button id="now" class="layer rounded flex centered with-padding">
-		<img src="../resources/current.png" alt="Now" class="icon">
-	</button>
 	<button id="before" class="layer rounded flex centered with-padding">
 		<img src="../resources/backward.png" alt="Before" class="icon">
 	</button>
 	<button id="after" class="layer rounded flex centered with-padding">
 		<img src="../resources/forward.png" alt="After" class="icon">
 	</button>
-	<div id="next" class="layer rounded flex centered">
-		<div class="flex column centered -container with-padding">
-			<h1 class="-title"></h1>
-			<h3 class="-description"></h3>
-		</div>
+	<button id="now" class="layer rounded flex centered with-padding">
+		<img src="../resources/current.png" alt="Now" class="icon">
+	</button>
+	<a href="./settings.html" role="button" aria-disabled="true" class="layer rounded flex centered with-padding">
+		<img src="../resources/settings.png" alt="Now" class="icon">
+	</a>
+	<div id="next" class="layer rounded flex centered with-padding">
+		<div class="flex column centered -container"></div>
 	</div>
 	<dialog class="console layer rounded in-top in-right with-padding with-vertical-gap"></dialog>
 	<dialog class="pop-up layer rounded with-padding with-gap flex column">

@@ -2,503 +2,305 @@
 /** @typedef {import("./components/archive.js")} */
 // @ts-ignore
 /** @typedef {import("./components/manager.js")} */
+// @ts-ignore
+/** @typedef {import("./components/timespan.js")} */
 
 "use strict";
 
-//#region Timespan
-/**
- * @typedef TimespanNotation
- * @property {Number} start
- * @property {Number} duration
- */
-class Timespan {
+//#region Activity
+class Activity extends Timespan {
 	/**
-	 * @param {Number} moment 
-	 */
-	static toTime(moment) {
-		const milliseconds = moment % 1000;
-		moment = Math.floor(moment / 1000);
-		const seconds = moment % 60;
-		moment = Math.floor(moment / 60);
-		const minutes = moment % 60;
-		moment = Math.floor(moment / 60);
-		const hours = moment % 24;
-		return (/** @type {[Number, Number, Number, Number]} */ ([hours, minutes, seconds, milliseconds]));
-	}
-	/**
-	 * @param {Number} hours 
-	 * @param {Number} minutes 
-	 * @param {Number} seconds 
-	 * @param {Number} milliseconds 
-	 */
-	static toMoment(hours = 0, minutes = 0, seconds = 0, milliseconds = 0) {
-		return ((((hours) * 60 + minutes) * 60 + seconds) * 1000 + milliseconds);
-	}
-	/**
-	 * @param {Number} moment 
-	 * @param {Boolean} full 
-	 */
-	static toString(moment, full = false) {
-		const [hours, minutes, seconds, milliseconds] = Timespan.toTime(moment);
-		let result = seconds.toFixed().padStart(2, `0`);
-		if (full || milliseconds > 0) {
-			result = `${result}.${milliseconds.toFixed().padStart(3, `0`)}`;
-		}
-		if (full || hours > 0) {
-			result = `${minutes.toFixed().padStart(2, `0`)}:${result}`;
-			result = `${hours.toFixed().padStart(2, `0`)}:${result}`;
-		} else if (minutes > 0) {
-			result = `${minutes.toFixed().padStart(2, `0`)}:${result}`;
-		}
-		return result;
-	}
-	/**
-	 * @param {String} text 
-	 */
-	static parse(text) {
-		const match = /(?:(?:(\d+):)?(\d+):)?(\d+)(?:\.(\d+))?/.exec(text);
-		if (!match) {
-			throw new SyntaxError(`Invalid moment syntax: '${text}'.`);
-		}
-		const [, hours, minutes, seconds, milliseconds] = match.map(part => Number.parseInt(part ?? 0));
-		if (0 > hours || hours >= 24) throw new RangeError(`Invalid hours value: '${hours}'.`);
-		if (0 > minutes || minutes >= 60) throw new RangeError(`Invalid minutes value: '${minutes}'.`);
-		if (0 > seconds || seconds >= 60) throw new RangeError(`Invalid seconds value: '${seconds}'.`);
-		if (0 > milliseconds || milliseconds >= 1000) throw new RangeError(`Invalid milliseconds value: '${milliseconds}'.`);
-		return Timespan.toMoment(hours, minutes, seconds, milliseconds);
-	}
-	/**
-	 * @param {TimespanNotation} source 
-	 */
-	static import(source) {
-		const result = new Timespan(
-			source.start,
-			source.duration
-		);
-		return result;
-	}
-	/**
-	 * @param {Timespan} source 
-	 */
-	static export(source) {
-		const result = (/** @type {TimespanNotation} */ ({}));
-		result.start = source.#start;
-		result.duration = source.#duration;
-		return result;
-	}
-	/**
-	 * @param {Number} start 
+	 * @param {Number} begin 
 	 * @param {Number} duration 
 	 */
-	constructor(start, duration) {
-		this.#start = start;
-		this.#duration = duration;
-		this.#end = this.#start + this.#duration;
+	constructor(begin, duration) {
+		super();
+		this.begin = begin;
+		this.duration = duration;
 	}
-	/** @type {Number} */ #start;
-	get start() {
-		return this.#start;
+	/** @type {Number} */ #begin = 0;
+	get begin() {
+		return this.#begin;
 	}
-	set start(value) {
-		this.#start = value;
-		this.#end = this.#start + this.#duration;
+	set begin(value) {
+		this.#begin = value;
 	}
-	/** @type {Number} */ #duration;
-	get duration() {
-		return this.#duration;
-	}
-	set duration(value) {
-		this.#duration = value;
-		this.#end = this.#start + this.#duration;
-	}
-	/** @type {Number} */ #end;
 	get end() {
-		return this.#end;
+		return this.begin + this.duration;
 	}
 	set end(value) {
-		this.#end = value;
-		this.#start = this.#end - this.#duration;
+		this.begin = value - this.duration;
 	}
-	/**
-	 * @param {Boolean} format 
-	 */
-	toString(format = false) {
-		if (format) {
-			return `(${Timespan.toString(this.#start, true)} - ${Timespan.toString(this.#end, true)})`;
-		} else {
-			return `(${(this.#start)} - ${this.#end})`;
-		}
+	toString(full = true) {
+		return `${Timespan.viaDuration(this.begin).toString(full)} => ${Timespan.viaDuration(this.end).toString(full)}`;
+	}
+	clone() {
+		const result = new Activity(this.begin, this.duration);
+		return result;
 	}
 }
 //#endregion
 //#region Freedom
-/**
- * @typedef {TimespanNotation} FreedomNotation
- */
-class Freedom extends Timespan {
+class Freedom extends Activity {
 	/**
-	 * @param {FreedomNotation} source 
+	 * @param {Number} begin 
+	 * @param {Number} duration 
 	 */
-	static import(source) {
-		const result = (/** @type {Freedom} */ (super.import(source)));
-		return result;
+	constructor(begin, duration) {
+		super(begin, duration);
+		this.begin = begin;
+		this.duration = duration;
 	}
-	/**
-	 * @param {Freedom} source 
-	 */
-	static export(source) {
-		const result = (/** @type {FreedomNotation} */ (super.export(source)));
+	clone() {
+		const result = new Freedom(this.begin, this.duration);
 		return result;
 	}
 }
 //#endregion
 //#region Recess
-/**
- * @typedef {TimespanNotation} RecessNotation
- */
-class Recess extends Timespan {
+class Recess extends Activity {
 	/**
-	 * @param {RecessNotation} source 
+	 * @param {Number} begin 
+	 * @param {Number} duration 
 	 */
-	static import(source) {
-		const result = (/** @type {Recess} */ (super.import(source)));
-		return result;
+	constructor(begin, duration) {
+		super(begin, duration);
+		this.begin = begin;
+		this.duration = duration;
 	}
-	/**
-	 * @param {Recess} source 
-	 */
-	static export(source) {
-		const result = (/** @type {RecessNotation} */ (super.export(source)));
+	clone() {
+		const result = new Recess(this.begin, this.duration);
 		return result;
 	}
 }
 //#endregion
 //#region Task
-/**
- * @typedef {Object} __TaskNotation__
- * @property {String} title
- * @property {String} description
- * @typedef {TimespanNotation & __TaskNotation__} TaskNotation
- */
-class Task extends Timespan {
+class Task extends Activity {
 	/**
-	 * @param {TaskNotation} source 
-	 */
-	static import(source) {
-		const result = (/** @type {Task} */ (super.import(source)));
-		return result;
-	}
-	/**
-	 * @param {Task} source 
-	 */
-	static export(source) {
-		const result = (/** @type {TaskNotation} */ (super.export(source)));
-		return result;
-	}
-	/**
+	 * @param {Number} begin 
+	 * @param {Number} duration 
 	 * @param {String} title 
 	 * @param {String} description 
-	 * @param {Number} start 
-	 * @param {Number} duration 
 	 */
-	constructor(title, description, start, duration) {
-		super(start, duration);
-		this.#title = title;
-		this.#description = description;
+	constructor(begin, duration, title, description) {
+		super(begin, duration);
+		this.begin = begin;
+		this.duration = duration;
+		this.title = title;
+		this.description = description;
 	}
-	/** @type {String} */ #title;
-	/** @readonly */ get title() {
+	/** @type {String} */ #title = ``;
+	get title() {
 		return this.#title;
 	}
-	/** @type {String} */ #description;
-	/** @readonly */ get description() {
+	set title(value) {
+		this.#title = value;
+	}
+	/** @type {String} */ #description = ``;
+	get description() {
 		return this.#description;
+	}
+	set description(value) {
+		this.#description = value;
+	}
+	clone() {
+		const result = new Task(this.begin, this.duration, this.title, this.description);
+		return result;
 	}
 }
 //#endregion
 
 //#region Subject
-/**
- * @typedef SubjectNotation
- * @property {String} title
- * @property {String} description
- */
 class Subject {
-	/**
-	 * @param {SubjectNotation} source 
-	 */
-	static import(source) {
-		const result = new Subject(
-			source.title,
-			source.description
-		);
-		return result;
-	}
-	/**
-	 * @param {Subject} source 
-	 */
-	static export(source) {
-		const result = (/** @type {SubjectNotation} */ ({}));
-		result.title = source.#title;
-		result.description = source.#description;
-		return result;
-	}
 	/**
 	 * @param {String} title 
 	 * @param {String} description 
 	 */
 	constructor(title, description) {
-		this.#title = title;
-		this.#description = description;
+		this.title = title;
+		this.description = description;
 	}
-	/** @type {String} */ #title;
-	/** @readonly */ get title() {
+	/** @type {String} */ #title = ``;
+	get title() {
 		return this.#title;
 	}
-	/** @type {String} */ #description;
-	/** @readonly */ get description() {
+	set title(value) {
+		this.#title = value;
+	}
+	/** @type {String} */ #description = ``;
+	get description() {
 		return this.#description;
 	}
-	/**
-	 * @returns {Readonly<Array<Timespan>>}
-	 */
-	toTimespans() {
-		throw new ReferenceError(`Method 'toTimespans' not implemented.`);
+	set description(value) {
+		this.#description = value;
+	}
+	/** @type {Array<Task>} */ #tasks = [];
+	/** @readonly */ get tasks() {
+		return this.#tasks;
+	}
+	toTimeline() {
+		/** @type {Array<Activity>} */ const timeline = [];
+		for (let index = 0; index < this.tasks.length; index++) {
+			const current = this.tasks[index];
+			timeline.push(current);
+			const next = this.tasks[index + 1];
+			if (next) {
+				timeline.push(new Recess(current.end, next.begin - current.end));
+			}
+		}
+		return timeline;
 	}
 }
 //#endregion
 //#region Lesson
-/**
- * @typedef {Object} __LessonNotation__
- * @property {Number} start
- * @property {Number} duration
- * @typedef {SubjectNotation & __LessonNotation__} LessonNotation
- */
 class Lesson extends Subject {
-	/**
-	 * @param {LessonNotation} source 
-	 */
-	static import(source) {
-		const result = new Lesson(
-			source.title,
-			source.description,
-			source.start,
-			source.duration
-		);
-		return result;
-	}
-	/**
-	 * @param {Lesson} source 
-	 */
-	static export(source) {
-		const result = (/** @type {LessonNotation} */ (super.export(source)));
-		const task = Task.export(source.#first);
-		result.start = task.start;
-		result.duration = task.duration;
-		return result;
-	}
 	/**
 	 * @param {String} title 
 	 * @param {String} description 
-	 * @param {Number} start 
+	 * @param {Number} begin 
 	 * @param {Number} duration 45 * 60 * 1000
 	 */
-	constructor(title, description, start, duration = 2700000) {
+	constructor(title, description, begin, duration = 2700000) {
 		super(title, description);
-		this.#first = new Task(this.title, this.description, start, duration);
-	}
-	/** @type {Task} */ #first;
-	/** @readonly */ get first() {
-		return this.#first;
-	}
-	toTimespans() {
-		return Object.freeze(/** @type {Array<Timespan>} */([
-			this.#first
-		]));
+		const first = new Task(begin, duration, this.title, this.description);
+		this.tasks.push(first);
 	}
 }
 //#endregion
 //#region Pair
-/**
- * @typedef {Object} __PairNotation__
- * @property {Number} start
- * @property {Number} duration
- * @property {Number} recess
- * @typedef {SubjectNotation & __PairNotation__} PairNotation
- */
 class Pair extends Subject {
-	/**
-	 * @param {PairNotation} source 
-	 */
-	static import(source) {
-		const result = new Pair(
-			source.title,
-			source.description,
-			source.start,
-			source.duration,
-			source.recess
-		);
-		return result;
-	}
-	/**
-	 * @param {Pair} source 
-	 */
-	static export(source) {
-		const result = (/** @type {PairNotation} */ ({}));
-		result.title = source.title;
-		result.description = source.description;
-		const task = Task.export(source.#first);
-		result.start = task.start;
-		result.duration = task.duration;
-		result.recess = source.#second.start - source.#first.end;
-		return result;
-	}
 	/**
 	 * @param {String} title 
 	 * @param {String} description 
-	 * @param {Number} start 
+	 * @param {Number} begin 
 	 * @param {Number} duration 40 * 60 * 1000
 	 * @param {Number} recess 5 * 60 * 1000
 	 */
-	constructor(title, description, start, duration = 2400000, recess = 300000) {
+	constructor(title, description, begin, duration = 2400000, recess = 300000) {
 		super(title, description);
-		this.#first = new Task(this.title, this.description, start, duration);
-		this.#second = new Task(this.title, this.description, this.#first.end + recess, duration);
-	}
-	/** @type {Task} */ #first;
-	/** @readonly */ get first() {
-		return this.#first;
-	}
-	/** @type {Task} */ #second;
-	/** @readonly */ get second() {
-		return this.#second;
-	}
-	toTimespans() {
-		return Object.freeze(/** @type {Array<Timespan>} */([
-			this.#first,
-			new Recess(this.#first.end, this.#second.start - this.#first.end),
-			this.#second
-		]));
+		const first = new Task(begin, duration, this.title, this.description);
+		const second = new Task(first.end + recess, duration, this.title, this.description);
+		this.tasks.push(first, second);
 	}
 }
 //#endregion
 //#region Weekday
-/**
- * @typedef WeekdayNotation
- * @property {String} title
- * @property {Array<SubjectNotation>} subjects
- */
 class Weekday {
-	/** @type {Number} */ static #min = 0;
-	/** @readonly @default 0 */ static get min() {
-		return this.#min;
+	/** @type {Number} */ static #begin = 0;
+	/** @readonly */ static get begin() {
+		return Weekday.#begin;
 	}
-	/** @type {Number} */ static #max = 86400000;
-	/** @readonly @default 86400000 */ static get max() {
-		return this.#max;
-	}
-	/**
-	 * @param {WeekdayNotation} source 
-	 */
-	static import(source) {
-		const result = new Weekday(
-			source.title,
-			...source.subjects.map((subject) => (/** @type {Subject} */ ((Object.hasOwn(subject, `second`) ? Pair.import(/** @type {PairNotation} */(subject)) : Lesson.import(/** @type {LessonNotation} */(subject))))))
-		);
-		return result;
-	}
-	/**
-	 * @param {Weekday} source 
-	 */
-	static export(source) {
-		const result = (/** @type {WeekdayNotation} */ ({}));
-		result.title = source.#title;
-		result.subjects = source.#subjects.map((subject) => {
-			if (subject instanceof Lesson) {
-				return Lesson.export(subject);
-			} else if (subject instanceof Pair) {
-				return Pair.export(subject);
-			} else throw new TypeError(`Invalid subject type: '${subject}'.`);
-		});
-		return result;
+	/** @type {Number} */ static #duration = 86400000;
+	/** @readonly */ static get duration() {
+		return Weekday.#duration;
 	}
 	/**
 	 * @param {String} title 
 	 * @param  {Array<Subject>} subjects 
 	 */
 	constructor(title, ...subjects) {
-		this.#title = title;
-		this.#subjects = subjects;
+		this.title = title;
+		this.subjects.push(...subjects);
 	}
-	/** @type {String} */ #title;
-	/** @readonly */ get title() {
+	/** @type {String} */ #title = ``;
+	get title() {
 		return this.#title;
 	}
-	/** @type {Array<Subject>} */ #subjects;
-	/** @readonly */ get subjects() {
-		return Object.freeze(this.#subjects);
+	set title(value) {
+		this.#title = value;
 	}
-	toTimespans() {
-		const timeline = (/** @type {Array<Timespan>} */([]));
-		for (let index = 0, pointer = Weekday.min; index <= this.#subjects.length; index++) {
-			const subject = this.#subjects.at(index);
-			const gap = (subject ? (/** @type {Lesson | Pair} */ (subject)).first.start : Weekday.max) - pointer;
+	/** @type {Array<Subject>} */ #subjects = [];
+	/** @readonly */ get subjects() {
+		return this.#subjects;
+	}
+	toTimeline() {
+		/** @type {Array<Activity>} */ const timeline = [];
+		for (let index = 0, pointer = Weekday.begin; index <= this.subjects.length; index++) {
+			const subject = this.subjects[index];
+			const gap = (subject ? subject.toTimeline()[0].begin : Weekday.duration) - pointer;
 			if (gap > 0) {
-				timeline.push(index == 0 || index == this.#subjects.length ? new Freedom(pointer, gap) : new Recess(pointer, gap));
+				timeline.push(index === 0 || index === this.subjects.length ? new Freedom(pointer, gap) : new Recess(pointer, gap));
 			}
 			if (subject) {
-				timeline.push(...subject.toTimespans());
-				pointer = (() => {
-					if (subject instanceof Lesson) {
-						return subject.first.end;
-					} else if (subject instanceof Pair) {
-						return subject.second.end;
-					} else throw new TypeError(`Invalid subject type: '${subject}'.`);
-				})();
+				const line = subject.toTimeline();
+				timeline.push(...line);
+				pointer = line[line.length - 1].end;
 			}
 		}
-		return Object.freeze(timeline);
+		return timeline;
 	}
 }
 //#endregion
 //#region Workweek
-/**
- * @typedef WorkweekNotation
- * @property {Array<WeekdayNotation>} weekdays
- */
 class Workweek {
-	/**
-	 * @param {WorkweekNotation} source 
-	 */
-	static import(source) {
-		const result = new Workweek(
-			...source.weekdays.map(weekday => Weekday.import(weekday))
-		);
-		return result;
-	}
-	/**
-	 * @param {Workweek} source 
-	 */
-	static export(source) {
-		const result = (/** @type {WorkweekNotation} */ ({}));
-		result.weekdays = source.#weekdays.map(weekday => Weekday.export(weekday));
-		return result;
-	}
 	/**
 	 * @param  {Array<Weekday>} weekdays 
 	 */
 	constructor(...weekdays) {
-		this.#weekdays = weekdays;
+		this.weekdays.push(...weekdays);
 	}
-	/** @type {Array<Weekday>} */ #weekdays;
+	// /** @readonly */ get duration() {
+	// 	return this.weekdays.length * Weekday.duration;
+	// }
+	/** @type {Array<Weekday>} */ #weekdays = [];
 	/** @readonly */ get weekdays() {
-		return Object.freeze(this.#weekdays);
+		return this.#weekdays;
 	}
-	toTimespans() {
-		return Object.freeze(this.#weekdays.flatMap((weekday, index) => weekday.toTimespans().map((timespan) => {
-			timespan.start += index * Weekday.max;
-			return timespan;
-		})));
+	toTimeline() {
+		/** @type {Array<Activity>} */ const timeline = [];
+		for (let index = 0; index < this.weekdays.length; index++) {
+			const weekday = this.weekdays[index];
+			const line = weekday.toTimeline().map((activity) => {
+				activity.begin += index * Weekday.duration;
+				return activity;
+			});
+			timeline.push(...line);
+		}
+		// TODO
+		return timeline;
+	}
+}
+//#endregion
+//#region Classlist
+class Classlist {
+	/**
+	 * @param {Array<Activity>} timeline 
+	 */
+	constructor(...timeline) {
+		this.#timeline.push(...timeline);
+	}
+	/** @type {Array<Activity>} */ #timeline = [];
+	/** @readonly */ get length() {
+		return this.#timeline.length;
+	}
+	/** @readonly */ get duration() {
+		return this.#timeline[this.length - 1].end;
+	}
+	/**
+	 * @param {Number} index 
+	 */
+	get(index) {
+		const integer = Math.trunc(index / this.length);
+		index %= this.length;
+		if (index < 0) {
+			index += this.length;
+		}
+		const value = this.#timeline[index].clone();
+		value.begin += integer * this.duration;
+		return value;
+	}
+	/**
+	 * @param {Number} moment 
+	 */
+	find(moment) {
+		const cycle = Math.trunc(moment / this.duration);
+		for (let index = cycle * this.length; index < cycle * this.length + this.length; index++) {
+			const activity = this.get(index);
+			if (activity.begin <= moment && moment < activity.end) {
+				return index;
+			}
+		}
+		throw new ReferenceError(`Can't reach the activity for moment ${moment}`);
 	}
 }
 //#endregion
