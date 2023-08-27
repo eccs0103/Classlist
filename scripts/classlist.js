@@ -44,18 +44,11 @@ void async function () {
 		switch (database) {
 			case `210`:
 			case `2.3`: {
-				await Manager.load(new Promise(async (resolve, reject) => {
-					try {
-						const response = await fetch(`../database/${database}.json`);
-						const object = await response.json();
-						const workweek = Workweek.import(object);
-						const notation = Workweek.export(workweek);
-						archivePreview.data = notation;
-						resolve(undefined);
-					} catch (error) {
-						reject(error);
-					}
-				}));
+				const response = await fetch(`../database/${database}.json`);
+				const object = await response.json();
+				const workweek = Workweek.import(object);
+				const notation = Workweek.export(workweek);
+				archivePreview.data = notation;
 			} break;
 		}
 
