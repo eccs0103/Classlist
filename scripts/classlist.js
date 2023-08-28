@@ -48,7 +48,7 @@ void async function () {
 					} catch (error) {
 						reject(error);
 					}
-				}));
+				}), 200, 800);
 			} break;
 		}
 
