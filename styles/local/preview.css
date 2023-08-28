@@ -14,7 +14,8 @@ body {
 			'panel-1	now-button		panel-2' 1fr
 			'panel-1	before-button	panel-2' max-content
 			'panel-1	after-button	panel-2' max-content
-			/ 1fr max-content 1fr;
+			/ 1fr max-content 1fr
+		;
 	}
 }
 
@@ -24,7 +25,8 @@ body {
 			'panel-1		panel-1			panel-1			panel-1' 1fr
 			'before-button	after-button	now-button		settings-button' max-content
 			'panel-2		panel-2			panel-2			panel-2' 1fr
-			/ max-content max-content 1fr max-content;
+			/ max-content max-content 1fr max-content
+		;
 	}
 }
 
@@ -47,7 +49,7 @@ div:has(div.-container) {
 }
 
 div:has(div.-container).-now {
-	--size-serpator: calc(var(--size-serpator) * 2);
+	--size-serpator: 0.5vmin;
 	outline-style: solid;
 	outline-color: var(--color-highlight);
 }

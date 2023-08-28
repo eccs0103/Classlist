@@ -34,25 +34,32 @@ void async function () {
 		//#endregion
 		//#region Initialize
 		const datalist = search.get(`datalist`);
-		if (datalist !== undefined) {
-			await Manager.load(new Promise(async (resolve, reject) => {
-				try {
-					const response = await fetch(`../database/${datalist}.json`);
-					const object = await response.json();
-					const workweek = Workweek.import(object);
-					const notation = Workweek.export(workweek);
-					archivePreview.data = notation;
-					resolve(undefined);
-				} catch (error) {
-					reject(error);
-				}
-			}), 200, 800);
+		switch (datalist) {
+			case undefined: break;
+			case `210`:
+			case `2.3`: {
+				await Manager.load(new Promise(async (resolve, reject) => {
+					try {
+						const response = await fetch(`../database/${datalist}.json`);
+						const object = await response.json();
+						const workweek = Workweek.import(object);
+						const notation = Workweek.export(workweek);
+						archivePreview.data = notation;
+						resolve(undefined);
+					} catch (error) {
+						reject(error);
+					}
+				}), 200, 800);
+			} break;
+			default: throw new ReferenceError(`Datalist '${datalist}' not found`);
 		}
 
 		if (archivePreview.data === null) {
-			throw new ReferenceError(`Classlist data not detected`);
+			throw new ReferenceError(`Datalist not detected`);
+			/* location.assign(`./database.html`);
+			return; */
 		}
-		/** @type {Workweek?} */ const workweek = Workweek.import(archivePreview.data);
+		const workweek = Workweek.import(archivePreview.data);
 		const classlist = new Classlist(...workweek.toTimeline());
 
 		/**

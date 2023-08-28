@@ -103,14 +103,14 @@
 				{
 					"title": "Հանրահաշիվ (դասախ.)",
 					"description": "Լսարան NaN",
-					"begin": 34200000,
+					"begin": 39900000,
 					"duration": 2400000,
 					"recess": 300000
 				},
 				{
 					"title": "Հանրահաշիվ (գործ.)",
 					"description": "Լսարան NaN",
-					"begin": 39900000,
+					"begin": 46200000,
 					"duration": 2400000,
 					"recess": 300000
 				}
