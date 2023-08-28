@@ -224,7 +224,7 @@ class Lesson extends Subject {
 		const base = Subject.export(source);
 		const result = (/** @type {LessonNotation} */ ({}));
 		result.title = base.title;
-		result.description = base.title;
+		result.description = base.description;
 		result.begin = source.tasks[0].begin;
 		result.duration = source.tasks[0].duration;
 		return result;
@@ -288,7 +288,7 @@ class Pair extends Subject {
 		const base = Subject.export(source);
 		const result = (/** @type {PairNotation} */ ({}));
 		result.title = base.title;
-		result.description = base.title;
+		result.description = base.description;
 		result.begin = source.tasks[0].begin;
 		result.duration = source.tasks[0].duration;
 		result.recess = source.tasks[1].begin - source.tasks[0].end;

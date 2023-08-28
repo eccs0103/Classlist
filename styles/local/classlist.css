@@ -42,19 +42,21 @@ div#current {
 	grid-area: current-panel;
 }
 
-/* div:where(#current, #next) > div.-container {
-	width: 100%;
-} */
+div#next {
+	grid-area: next-panel;
+}
 
-div:where(#current, #next) > div.-container {
+div.-current {
+	outline-style: solid;
+	outline-color: var(--color-highlight);
+}
+
+div.-container {
+	--filled-ratio: 0%;
 	background-image: linear-gradient(90deg, var(--color-highlight) var(--filled-ratio), var(--color-text) 0%);
 	-webkit-background-clip: text;
 	background-clip: text;
 	-webkit-text-fill-color: transparent;
-}
-
-div#next {
-	grid-area: next-panel;
 }
 
 button#before {

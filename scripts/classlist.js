@@ -6,14 +6,22 @@
 void async function () {
 	try {
 		//#region Definition
-		const divCurrentContainer = document.querySelector(`div#current > *.-container`);
-		if (!(divCurrentContainer instanceof HTMLDivElement)) {
-			throw new TypeError(`Invalid element: ${divCurrentContainer}`);
+		const divContainers = document.querySelectorAll(`div.-container`);
+
+		/** @type {Map<HTMLDivElement, [HTMLHeadingElement, HTMLHeadingElement, HTMLHeadingElement]>} */ const groups = new Map();
+		for (let index = 0; index < divContainers.length; index++) {
+			const divContainer = divContainers[index];
+			if (!(divContainer instanceof HTMLDivElement)) {
+				throw new TypeError(`Invalid element: ${divContainer}`);
+			}
+
+			const h5Subtitle = divContainer.appendChild(document.createElement(`h5`));
+			const h1Title = divContainer.appendChild(document.createElement(`h1`));
+			const h3Description = divContainer.appendChild(document.createElement(`h3`));
+
+			groups.set(divContainer, [h5Subtitle, h1Title, h3Description]);
 		}
 
-		const h6CurrentSubtitle = divCurrentContainer.appendChild(document.createElement(`h5`));
-		const h1CurrentTitle = divCurrentContainer.appendChild(document.createElement(`h1`));
-		const h3CurrentDescription = divCurrentContainer.appendChild(document.createElement(`h3`));
 
 		const buttonBefore = document.querySelector(`button#before`);
 		if (!(buttonBefore instanceof HTMLButtonElement)) {
@@ -29,15 +37,6 @@ void async function () {
 		if (!(buttonNow instanceof HTMLButtonElement)) {
 			throw new TypeError(`Invalid element: ${buttonNow}`);
 		}
-
-		const divNextContainer = document.querySelector(`div#next > *.-container`);
-		if (!(divNextContainer instanceof HTMLDivElement)) {
-			throw new TypeError(`Invalid element: ${divNextContainer}`);
-		}
-
-		const h6NextSubtitle = divNextContainer.appendChild(document.createElement(`h5`));
-		const h1NextTitle = divNextContainer.appendChild(document.createElement(`h1`));
-		const h3NextDescription = divNextContainer.appendChild(document.createElement(`h3`));
 		//#endregion
 		//#region Initialize
 		const database = search.get(`database`);
@@ -89,41 +88,39 @@ void async function () {
 		const render = function () {
 			const moment = fix(Date.now());
 
-			const index = classlist.find(moment) + offset;
+			const current = classlist.find(moment) + offset;
 
-			/// Current
-			const current = classlist.get(index);
-			h6CurrentSubtitle.innerText = new Date(unfix(current.begin)).toLocaleDateString();
-			h3CurrentDescription.innerText = ``;
-			if (current instanceof Freedom) {
-				h1CurrentTitle.innerText = `Դասեր չկան`;
-			} else if (current instanceof Recess) {
-				h1CurrentTitle.innerText = `Դասամիջոց`;
-			} else if (current instanceof Task) {
-				h1CurrentTitle.innerText = current.title;
-				h3CurrentDescription.innerText += current.description;
-			} else throw new TypeError(`Invalid type for ${current}`);
-			divCurrentContainer.style.setProperty(`--filled-ratio`, `${Math.min(Math.max(0, (moment - current.begin) / current.duration), 1) * 100}%`);
-			const { negativity, hours, minutes, seconds } = Timespan.viaDuration(current.end - moment);
-			if (h3CurrentDescription.innerText && !h3CurrentDescription.innerText.endsWith(`\n`)) {
-				h3CurrentDescription.innerText += `\n`;
+			let index = 0;
+			for (const [divContainer, [h5Subtitle, h1Title, h3Description]] of groups) {
+				if (!(divContainer instanceof HTMLDivElement)) {
+					throw new TypeError(`Invalid element: ${divContainer}`);
+				}
+				const activity = classlist.get(current + index);
+
+				h5Subtitle.innerText = new Date(unfix(activity.begin)).toLocaleDateString();
+				h3Description.innerText = ``;
+				if (activity instanceof Freedom) {
+					h1Title.innerText = `Դասեր չկան`;
+				} else if (activity instanceof Recess) {
+					h1Title.innerText = `Դասամիջոց`;
+				} else if (activity instanceof Task) {
+					h1Title.innerText = activity.title;
+					h3Description.innerText += activity.description;
+				} else throw new TypeError(`Invalid type for ${activity}`);
+				divContainer.style.setProperty(`--filled-ratio`, `${Math.min(Math.max(0, (moment - activity.begin) / activity.duration), 1) * 100}%`);
+
+				if (index === 0) {
+					const { negativity, hours, minutes, seconds } = Timespan.viaDuration(activity.end - moment);
+					if (h3Description.innerText && !h3Description.innerText.endsWith(`\n`)) {
+						h3Description.innerText += `\n`;
+					}
+					h3Description.innerText += (negativity ? `Անցել է` : `Դեռ կա`);
+					h3Description.innerText += ` ${hours} ժամ, ${minutes} րոպե և ${seconds} վայրկյան`;
+				}
+
+				divContainer.parentElement?.classList.toggle(`-current`, activity.begin <= moment && moment < activity.end);
+				index++;
 			}
-			h3CurrentDescription.innerText += (negativity ? `Անցել է` : `Դեռ կա`);
-			h3CurrentDescription.innerText += ` ${hours} ժամ, ${minutes} րոպե և ${seconds} վայրկյան`;
-
-			/// Next
-			const next = classlist.get(index + 1);
-			h6NextSubtitle.innerText = new Date(unfix(next.begin)).toLocaleDateString();
-			h3NextDescription.innerText = ``;
-			if (next instanceof Freedom) {
-				h1NextTitle.innerText = `Դասեր չկան`;
-			} else if (next instanceof Recess) {
-				h1NextTitle.innerText = `Դասամիջոց`;
-			} else if (next instanceof Task) {
-				h1NextTitle.innerText = next.title;
-				h3NextDescription.innerText += next.description;
-			} else throw new TypeError(`Invalid type for ${next}`);
-			divNextContainer.style.setProperty(`--filled-ratio`, `${Math.min(Math.max(0, (moment - next.begin) / next.duration), 1) * 100}%`);
 		};
 
 		render();
