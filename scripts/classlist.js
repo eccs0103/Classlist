@@ -6,22 +6,16 @@
 void async function () {
 	try {
 		//#region Definition
-		const divContainers = document.querySelectorAll(`div.-container`);
-
-		/** @type {Map<HTMLDivElement, [HTMLHeadingElement, HTMLHeadingElement, HTMLHeadingElement]>} */ const groups = new Map();
-		for (let index = 0; index < divContainers.length; index++) {
-			const divContainer = divContainers[index];
+		/** @type {Array<[HTMLDivElement, HTMLHeadingElement, HTMLHeadingElement, HTMLHeadingElement]>} */
+		const groups = Array.from(document.querySelectorAll(`div.-container`)).map((divContainer) => {
 			if (!(divContainer instanceof HTMLDivElement)) {
 				throw new TypeError(`Invalid element: ${divContainer}`);
 			}
-
-			const h5Subtitle = divContainer.appendChild(document.createElement(`h5`));
-			const h1Title = divContainer.appendChild(document.createElement(`h1`));
-			const h3Description = divContainer.appendChild(document.createElement(`h3`));
-
-			groups.set(divContainer, [h5Subtitle, h1Title, h3Description]);
-		}
-
+			const h4Subtitle = divContainer.appendChild(document.createElement(`h4`));
+			const h2Title = divContainer.appendChild(document.createElement(`h2`));
+			const h4Description = divContainer.appendChild(document.createElement(`h4`));
+			return [divContainer, h4Subtitle, h2Title, h4Description];
+		});
 
 		const buttonBefore = document.querySelector(`button#before`);
 		if (!(buttonBefore instanceof HTMLButtonElement)) {
@@ -86,40 +80,35 @@ void async function () {
 
 		let offset = 0;
 		const render = function () {
-			const moment = fix(Date.now());
+			const now = fix(Date.now());
+			const current = classlist.find(now) + offset;
 
-			const current = classlist.find(moment) + offset;
-
-			let index = 0;
-			for (const [divContainer, [h5Subtitle, h1Title, h3Description]] of groups) {
-				if (!(divContainer instanceof HTMLDivElement)) {
-					throw new TypeError(`Invalid element: ${divContainer}`);
-				}
+			for (let index = 0; index < groups.length; index++) {
+				const [divContainer, h4Subtitle, h2Title, h4Description] = groups[index];
 				const activity = classlist.get(current + index);
 
-				h5Subtitle.innerText = new Date(unfix(activity.begin)).toLocaleDateString();
-				h3Description.innerText = ``;
+				h4Subtitle.innerText = new Date(unfix(activity.begin)).toLocaleDateString();
+				h4Description.innerText = ``;
 				if (activity instanceof Freedom) {
-					h1Title.innerText = `Դասեր չկան`;
+					h2Title.innerText = `Դասեր չկան`;
 				} else if (activity instanceof Recess) {
-					h1Title.innerText = `Դասամիջոց`;
+					h2Title.innerText = `Դասամիջոց`;
 				} else if (activity instanceof Task) {
-					h1Title.innerText = activity.title;
-					h3Description.innerText += activity.description;
+					h2Title.innerText = activity.title;
+					h4Description.innerText += activity.description;
 				} else throw new TypeError(`Invalid type for ${activity}`);
-				divContainer.style.setProperty(`--filled-ratio`, `${Math.min(Math.max(0, (moment - activity.begin) / activity.duration), 1) * 100}%`);
+				divContainer.style.setProperty(`--filled-ratio`, `${Math.min(Math.max(0, (now - activity.begin) / activity.duration), 1) * 100}%`);
 
 				if (index === 0) {
-					const { negativity, hours, minutes, seconds } = Timespan.viaDuration(activity.end - moment);
-					if (h3Description.innerText && !h3Description.innerText.endsWith(`\n`)) {
-						h3Description.innerText += `\n`;
+					const { negativity, hours, minutes, seconds } = Timespan.viaDuration(activity.end - now);
+					if (h4Description.innerText && !h4Description.innerText.endsWith(`\n`)) {
+						h4Description.innerText += `\n`;
 					}
-					h3Description.innerText += (negativity ? `Անցել է` : `Դեռ կա`);
-					h3Description.innerText += ` ${hours} ժամ, ${minutes} րոպե և ${seconds} վայրկյան`;
+					h4Description.innerText += (negativity ? `Անցել է` : `Դեռ կա`);
+					h4Description.innerText += ` ${hours} ժամ, ${minutes} րոպե և ${seconds} վայրկյան`;
 				}
 
-				divContainer.parentElement?.classList.toggle(`-current`, activity.begin <= moment && moment < activity.end);
-				index++;
+				divContainer.parentElement?.classList.toggle(`-now`, activity.begin <= now && now < activity.end);
 			}
 		};
 
