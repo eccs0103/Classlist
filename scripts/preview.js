@@ -40,11 +40,11 @@ void async function () {
 			case `2.3`: {
 				await Manager.load(new Promise(async (resolve, reject) => {
 					try {
-						const response = await fetch(`../database/${datalist}.json`);
+						const name = `${datalist}.json`;
+						const response = await fetch(`../database/${name}`);
 						const object = await response.json();
 						const workweek = Workweek.import(object);
-						const notation = Workweek.export(workweek);
-						archivePreview.data = notation;
+						archivePreview.data = { title: name, date: Date.now(), notation: Workweek.export(workweek) };;
 						resolve(undefined);
 					} catch (error) {
 						reject(error);
@@ -55,11 +55,11 @@ void async function () {
 		}
 
 		if (archivePreview.data === null) {
-			throw new ReferenceError(`Datalist not detected`);
-			/* location.assign(`./database.html`);
-			return; */
+			await Manager.alert(`Datalist not detected. Upload it in settings to continue`);
+			location.assign(`./settings.html`);
+			return;
 		}
-		const workweek = Workweek.import(archivePreview.data);
+		const workweek = Workweek.import(archivePreview.data.notation);
 		const classlist = new Classlist(...workweek.toTimeline());
 
 		/**

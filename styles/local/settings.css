@@ -1,0 +1,43 @@
+body {
+	position: fixed;
+	inset: 0;
+}
+
+a[href="./preview.html"] {
+	align-self: flex-start;
+}
+
+main {
+	width: 100%;
+	max-width: 100vmin;
+	margin-inline: auto;
+}
+
+div#datalist-panel {
+	display: grid;
+	grid-template-columns: 1fr;
+	padding: var(--size-serpator);
+	gap: var(--size-serpator);
+}
+
+div#datalist-panel[data-connected] {
+	grid-template-columns: 1fr max-content;
+	background-color: var(--color-highlight);
+}
+
+label[for="upload-datalist"] {
+	overflow-x: hidden;
+}
+
+div#datalist-panel:not([data-connected]) label[for="upload-datalist"] {
+	border-radius: var(--size-gap) !important;
+}
+
+span#datalist-information {
+	white-space: nowrap;
+	overflow-x: hidden;
+}
+
+div#datalist-panel:not([data-connected]) button#remove-datalist {
+	display: none !important;
+}

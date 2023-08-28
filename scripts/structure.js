@@ -413,7 +413,7 @@ class Weekday {
 
 class Workweek {
 	/**
-	 * @param {WorkweekNotation} source 
+	 * @param {any} source 
 	 */
 	static import(source) {
 		const $weekdays = Reflect.get(source, `weekdays`);
@@ -548,8 +548,13 @@ if (!(metaApplicationName instanceof HTMLMetaElement)) {
 const title = metaApplicationName.content;
 
 /** @type {Archive<SettingsNotation>} */ const archiveSettings = new Archive(`${developer}.${title}.Settings`, Settings.export(new Settings()));
-/** @type {Archive<Array<WorkweekNotation>>} */ const archiveDatabase = new Archive(`${developer}.${title}.Database`, (/** @type {Array<WorkweekNotation>} */ ([])));
-/** @type {Archive<WorkweekNotation?>} */ const archivePreview = new Archive(`${developer}.${title}.Preview`, null);
+/**
+ * @typedef Datalist
+ * @property {String} title
+ * @property {Number} date
+ * @property {WorkweekNotation} notation
+ */
+/** @type {Archive<Datalist?>} */ const archivePreview = new Archive(`${developer}.${title}.Preview`, null);
 
 const settings = Settings.import(archiveSettings.data);
 const search = Manager.getSearch();

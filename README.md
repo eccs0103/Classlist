@@ -4,6 +4,9 @@
 Classlist, easy to use.
 
 ## Feed
+### Update 0.9.3
+*Information not yet available*
+
 ### Update 0.9.0
 - Added list saving functionality.
 - Added database support.
