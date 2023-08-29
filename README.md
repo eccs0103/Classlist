@@ -5,13 +5,13 @@ Automatically configured schedule.
 
 ## Feed
 ### Update 1.0.0
-- Добавлена настройка темы.
-- Добавлена настройка даты и описания для задач.
-- Добавлена возможность восстановить заводские настройки.
-- Улучшена цветокоррекция для поддерки обоих тем.
+- Added theme customization.
+- Added date and description settings for tasks.
+- Added the option to reset to factory settings.
+- Improved color correction to support both themes.
 
 ### Update 0.9.3
-- Добавлена возможность управления базой данных.
+- Added database management capability.
 
 ### Update 0.9.0
 - Added list saving functionality.
