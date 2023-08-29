@@ -13,31 +13,36 @@ main {
 	margin-inline: auto;
 }
 
-div#datalist-panel {
+div#schedule-panel {
 	display: grid;
 	grid-template-columns: 1fr;
 	padding: var(--size-serpator);
 	gap: var(--size-serpator);
 }
 
-div#datalist-panel[data-connected] {
+div#schedule-panel[data-connected] {
 	grid-template-columns: 1fr max-content;
 	background-color: var(--color-highlight);
 }
 
-label[for="upload-datalist"] {
+label[for="upload-schedule"] {
 	overflow-x: hidden;
 }
 
-div#datalist-panel:not([data-connected]) label[for="upload-datalist"] {
+div#schedule-panel:not([data-connected]) label[for="upload-schedule"] {
 	border-radius: var(--size-gap) !important;
 }
 
-span#datalist-information {
+span#schedule-information {
 	white-space: nowrap;
 	overflow-x: hidden;
 }
 
-div#datalist-panel:not([data-connected]) button#remove-datalist {
+div#schedule-panel:not([data-connected]) button#remove-schedule {
 	display: none !important;
+}
+
+button#reset-settings {
+	width: fit-content;
+	justify-self: center;
 }

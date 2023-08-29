@@ -7,7 +7,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="application-name" content="Classlist">
 	<meta name="author" content="Adaptive Core">
-	<meta name="description" content="Adaptive Core">
+	<meta name="description" content="Automatically configured schedule.">
 	<meta name="keywords" content="classes, schedule, sessions, lessons, activities, subjects, study plan">
 	<title>Classlist - Settings</title>
 	<link rel="shortcut icon" href="../resources/settings.png" media="(prefers-color-scheme: light)">
@@ -28,18 +28,43 @@
 		<img src="../resources/return.png" alt="Return" class="icon">
 	</a>
 	<main class="flex column layer rounded with-padding large-padding">
-		<h3>Datalist</h3>
+		<h1>Settings</h1>
 		<section class="option">
-			<div id="datalist-panel" class="rounded depth grid-line">
-				<input id="upload-datalist" type="file" accept=".json" hidden>
-				<label for="upload-datalist" role="button" class="rounded in-right layer flex secondary-centered with-gap with-padding">
+			<h3 class="title">Schedule</h3>
+			<div id="schedule-panel" class="rounded depth grid-line">
+				<input id="upload-schedule" type="file" accept=".json" hidden>
+				<label for="upload-schedule" role="button" class="rounded in-right layer flex secondary-centered with-gap with-padding">
 					<img src="../resources/upload.png" alt="Upload" class="icon">
-					<span id="datalist-information"></span>
+					<span id="schedule-information"></span>
 				</label>
-				<button id="remove-datalist" class="rounded layer with-padding flex in-left invalid-background">
+				<button id="remove-schedule" class="rounded layer with-padding flex in-left invalid-background">
 					<img src="../resources/delete.png" alt="Remove" class="icon">
 				</button>
 			</div>
+		</section>
+		<section class="option">
+			<h3 class="title">Theme</h3>
+			<dfn class="definition">External design of the page: color scheme, background and foreground, font.</dfn>
+			<select id="theme" class="value rounded depth with-padding"></select>
+		</section>
+		<section class="option">
+			<h3 class="title">Dates</h3>
+			<dfn class="definition">Show dates over tasks.</dfn>
+			<input id="toggle-dates" type="checkbox" hidden>
+			<label for="toggle-dates" role="checkbox" class="value toggle depth rounded">
+				<span class="knob layer"></span>
+			</label>
+		</section>
+		<section class="option">
+			<h3 class="title">Descriptions</h3>
+			<dfn class="definition">Show descriptions under the tasks.</dfn>
+			<input id="toggle-descriptions" type="checkbox" hidden>
+			<label for="toggle-descriptions" role="checkbox" class="value toggle depth rounded">
+				<span class="knob layer"></span>
+			</label>
+		</section>
+		<section class="option">
+			<button id="reset-settings" class="layer rounded with-padding grid-line">Reset settings</button>
 		</section>
 	</main>
 	<dialog class="console layer rounded in-top in-right with-padding with-vertical-gap"></dialog>

@@ -33,14 +33,14 @@ void async function () {
 		}
 		//#endregion
 		//#region Initialize
-		const datalist = search.get(`datalist`);
-		switch (datalist) {
+		const schedule = search.get(`schedule`);
+		switch (schedule) {
 			case undefined: break;
 			case `210`:
 			case `2.3`: {
 				await Manager.load(new Promise(async (resolve, reject) => {
 					try {
-						const name = `${datalist}.json`;
+						const name = `${schedule}.json`;
 						const response = await fetch(`../database/${name}`);
 						const object = await response.json();
 						const workweek = Workweek.import(object);
@@ -51,11 +51,11 @@ void async function () {
 					}
 				}), 200, 800);
 			} break;
-			default: throw new ReferenceError(`Datalist '${datalist}' not found`);
+			default: throw new ReferenceError(`Schedule '${schedule}' not found`);
 		}
 
 		if (archivePreview.data === null) {
-			await Manager.alert(`Datalist not detected. Upload it in settings to continue`);
+			await Manager.alert(`Schedule not detected. Upload it in settings to continue`);
 			location.assign(`./settings.html`);
 			return;
 		}
@@ -91,7 +91,10 @@ void async function () {
 				const [divContainer, h4Subtitle, h2Title, h4Description] = groups[index];
 				const activity = classlist.get(current + index);
 
-				h4Subtitle.innerText = new Date(unfix(activity.begin)).toLocaleDateString();
+				h4Subtitle.innerText = (settings.dates ?
+					new Date(unfix(activity.begin)).toLocaleDateString() :
+					``
+				);
 				h4Description.innerText = ``;
 				if (activity instanceof Freedom) {
 					h2Title.innerText = `Դասեր չկան`;
@@ -99,7 +102,9 @@ void async function () {
 					h2Title.innerText = `Դասամիջոց`;
 				} else if (activity instanceof Task) {
 					h2Title.innerText = activity.title;
-					h4Description.innerText += activity.description;
+					if (settings.descriptions) {
+						h4Description.innerText += activity.description;
+					}
 				} else throw new TypeError(`Invalid type for ${activity}`);
 				divContainer.style.setProperty(`--filled-ratio`, `${Math.min(Math.max(0, (now - activity.begin) / activity.duration), 1) * 100}%`);
 

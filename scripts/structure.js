@@ -510,7 +510,10 @@ class Classlist {
 
 //#region Settings
 /**
- * @typedef {{}} SettingsNotation
+ * @typedef SettingsNotation
+ * @property {String} [theme]
+ * @property {Boolean} [dates]
+ * @property {Boolean} [descriptions]
  */
 
 class Settings {
@@ -519,6 +522,9 @@ class Settings {
 	 */
 	static import(source) {
 		const result = new Settings();
+		if (source.theme !== undefined) result.theme = source.theme;
+		if (source.dates !== undefined) result.dates = source.dates;
+		if (source.descriptions !== undefined) result.descriptions = source.descriptions;
 		return result;
 	}
 	/**
@@ -526,11 +532,43 @@ class Settings {
 	 */
 	static export(source) {
 		const result = (/** @type {SettingsNotation} */ ({}));
+		result.theme = source.theme;
+		result.dates = source.dates;
+		result.descriptions = source.descriptions;
 		return result;
+	}
+	/** @type {Array<String>} */ static #themes = [`system`, `light`, `dark`];
+	/** @readonly */ static get themes() {
+		return Object.freeze(Settings.#themes);
+	}
+	/** @type {String} */ #theme = Settings.themes[0];
+	get theme() {
+		return this.#theme;
+	}
+	set theme(value) {
+		if (Settings.themes.includes(value)) {
+			this.#theme = value;
+		} else throw new TypeError(`Invalid theme type: ${value}`);
+	}
+	/** @type {Boolean} */ #dates = true;
+	get dates() {
+		return this.#dates;
+	}
+	set dates(value) {
+		this.#dates = value;
+	}
+	/** @type {Boolean} */ #descriptions = true;
+	get descriptions() {
+		return this.#descriptions;
+	}
+	set descriptions(value) {
+		this.#descriptions = value;
 	}
 	reset() {
 		const settings = new Settings();
-		// TODO
+		this.theme = settings.theme;
+		this.dates = settings.dates;
+		this.descriptions = settings.descriptions;
 	}
 }
 //#endregion
@@ -549,13 +587,14 @@ const title = metaApplicationName.content;
 
 /** @type {Archive<SettingsNotation>} */ const archiveSettings = new Archive(`${developer}.${title}.Settings`, Settings.export(new Settings()));
 /**
- * @typedef Datalist
+ * @typedef Schedule
  * @property {String} title
  * @property {Number} date
  * @property {WorkweekNotation} notation
  */
-/** @type {Archive<Datalist?>} */ const archivePreview = new Archive(`${developer}.${title}.Preview`, null);
+/** @type {Archive<Schedule?>} */ const archivePreview = new Archive(`${developer}.${title}.Preview`, null);
 
 const settings = Settings.import(archiveSettings.data);
+document.documentElement.dataset[`theme`] = settings.theme;
 const search = Manager.getSearch();
 //#endregion

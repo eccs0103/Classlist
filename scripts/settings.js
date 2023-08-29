@@ -5,41 +5,65 @@
 
 try {
 	//#region Definition
-	const divDatalistPanel = document.querySelector(`div#datalist-panel`);
-	if (!(divDatalistPanel instanceof HTMLDivElement)) {
-		throw new TypeError(`Invalid element: ${divDatalistPanel}`);
+	const divSchedulePanel = document.querySelector(`div#schedule-panel`);
+	if (!(divSchedulePanel instanceof HTMLDivElement)) {
+		throw new TypeError(`Invalid element: ${divSchedulePanel}`);
 	}
 
-	const inputUploadDatalist = document.querySelector(`input#upload-datalist`);
-	if (!(inputUploadDatalist instanceof HTMLInputElement)) {
-		throw new TypeError(`Invalid element: ${inputUploadDatalist}`);
+	const inputUploadSchedule = document.querySelector(`input#upload-schedule`);
+	if (!(inputUploadSchedule instanceof HTMLInputElement)) {
+		throw new TypeError(`Invalid element: ${inputUploadSchedule}`);
 	}
 
-	const spanDatalistInformation = document.querySelector(`span#datalist-information`);
-	if (!(spanDatalistInformation instanceof HTMLSpanElement)) {
-		throw new TypeError(`Invalid element: ${spanDatalistInformation}`);
+	const spanScheduleInformation = document.querySelector(`span#schedule-information`);
+	if (!(spanScheduleInformation instanceof HTMLSpanElement)) {
+		throw new TypeError(`Invalid element: ${spanScheduleInformation}`);
 	}
 
-	const buttonRemoveDatalist = document.querySelector(`button#remove-datalist`);
-	if (!(buttonRemoveDatalist instanceof HTMLButtonElement)) {
-		throw new TypeError(`Invalid element: ${buttonRemoveDatalist}`);
+	const buttonRemoveSchedule = document.querySelector(`button#remove-schedule`);
+	if (!(buttonRemoveSchedule instanceof HTMLButtonElement)) {
+		throw new TypeError(`Invalid element: ${buttonRemoveSchedule}`);
 	}
 
 	const configure = function () {
-		divDatalistPanel.toggleAttribute(`data-connected`, archivePreview.data !== null);
-		spanDatalistInformation.innerText = (archivePreview.data === null ?
-			`Upload for functionality.` :
+		divSchedulePanel.toggleAttribute(`data-connected`, archivePreview.data !== null);
+		spanScheduleInformation.innerText = (archivePreview.data === null ?
+			`Upload` :
 			`${archivePreview.data.title} • ${new Date(archivePreview.data.date).toLocaleDateString()}`
 		);
 	};
+
+	const selectTheme = document.querySelector(`select#theme`);
+	if (!(selectTheme instanceof HTMLSelectElement)) {
+		throw new TypeError(`Invalid element: ${selectTheme}`);
+	}
+
+	const inputToggleDates = document.querySelector(`input#toggle-dates`);
+	if (!(inputToggleDates instanceof HTMLInputElement)) {
+		throw new TypeError(`Invalid element: ${inputToggleDates}`);
+	}
+
+	const inputToggleDescriptions = document.querySelector(`input#toggle-descriptions`);
+	if (!(inputToggleDescriptions instanceof HTMLInputElement)) {
+		throw new TypeError(`Invalid element: ${inputToggleDescriptions}`);
+	}
+
+	const buttonResetSettings = document.querySelector(`button#reset-settings`);
+	if (!(buttonResetSettings instanceof HTMLButtonElement)) {
+		throw new TypeError(`Invalid element: ${buttonResetSettings}`);
+	}
 	//#endregion
 	//#region Initialize
+	window.addEventListener(`beforeunload`, (event) => {
+		archiveSettings.data = Settings.export(settings);
+	});
+
 	configure();
 
-	inputUploadDatalist.addEventListener(`change`, async (event) => {
+	inputUploadSchedule.addEventListener(`change`, async (event) => {
 		await Manager.load(new Promise(async (resolve, reject) => {
 			try {
-				const files = inputUploadDatalist.files;
+				const files = inputUploadSchedule.files;
 				if (files === null) {
 					throw new TypeError(`File list is empty`);
 				}
@@ -56,10 +80,41 @@ try {
 		}));
 	});
 
-	buttonRemoveDatalist.addEventListener(`click`, async (event) => {
-		if (await Manager.confirm(`Datalist will be removed from memory forever. Are you sure?`, `Warning`)) {
+	buttonRemoveSchedule.addEventListener(`click`, async (event) => {
+		if (await Manager.confirm(`Schedule will be removed from memory forever. Are you sure?`, `Warning`)) {
 			archivePreview.data = null;
 			configure();
+		}
+	});
+
+	for (const theme of Settings.themes) {
+		const option = selectTheme.appendChild(document.createElement(`option`));
+		option.value = theme;
+		option.innerText = theme.replace(/\b\w/, (match) => match.toUpperCase());
+	}
+	selectTheme.value = settings.theme;
+	selectTheme.addEventListener(`change`, (event) => {
+		settings.theme = selectTheme.value;
+		document.documentElement.dataset[`theme`] = settings.theme;
+	});
+
+	inputToggleDates.checked = settings.dates;
+	inputToggleDates.addEventListener(`change`, (event) => {
+		settings.dates = inputToggleDates.checked;
+	});
+
+	inputToggleDescriptions.checked = settings.descriptions;
+	inputToggleDescriptions.addEventListener(`change`, (event) => {
+		settings.descriptions = inputToggleDescriptions.checked;
+	});
+
+	buttonResetSettings.addEventListener(`click`, async (event) => {
+		if (await Manager.confirm(`The settings will be reset to factory defaults. Are you sure?`)) {
+			settings.reset();
+			selectTheme.value = settings.theme;
+			document.documentElement.dataset[`theme`] = settings.theme;
+			inputToggleDates.checked = settings.dates;
+			inputToggleDescriptions.checked = settings.descriptions;
 		}
 	});
 	//#endregion
