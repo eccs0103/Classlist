@@ -4,23 +4,37 @@
 			"title": "Երկուշաբթի",
 			"subjects": [
 				{
-					"title": "Հայոց պատմություն (դասախ.)",
+					"title": "Հայոց պատմություն (դաս.)",
 					"description": "Լսարան 315",
-					"begin": 34200000,
+					"begin": 570000,
 					"duration": 2400000,
 					"recess": 300000
 				},
 				{
-					"title": "Ալգորիթմների տեսություն (դասախ.)",
+					"title": "Ալգ. տեսություն (դաս.)",
 					"description": "Լսարան 108",
-					"begin": 39900000,
+					"begin": 665000,
 					"duration": 2400000,
 					"recess": 300000
 				},
 				{
-					"title": "Մաթեմատիկական անալիզ (գործ.)",
+					"title": "Մաթ. անալիզ (գոր.)",
 					"description": "Լսարան 115",
-					"begin": 46200000,
+					"begin": 770000,
+					"duration": 2400000,
+					"recess": 300000
+				},
+				{
+					"title": "Տնտեսագիտություն (դաս.)",
+					"description": "Լսարան 108",
+					"begin": 870000,
+					"duration": 2400000,
+					"recess": 300000
+				},
+				{
+					"title": "Կրոնագիտություն (դաս.)",
+					"description": "Լսարան 108",
+					"begin": 965000,
 					"duration": 2400000,
 					"recess": 300000
 				}
@@ -30,23 +44,37 @@
 			"title": "Երեքշաբթի",
 			"subjects": [
 				{
-					"title": "Մաթեմատիկական անալիզ (գործ.)",
-					"description": "Լսարան NaN",
-					"begin": 34200000,
+					"title": "Մաթ. անալիզ (գոր.)",
+					"description": "Լսարան 107",
+					"begin": 570000,
 					"duration": 2400000,
 					"recess": 300000
 				},
 				{
-					"title": "Ալգորիթմների տեսություն (գործ.)",
-					"description": "Լսարան NaN",
-					"begin": 39900000,
+					"title": "Ալգ. տեսություն (գոր.)",
+					"description": "Լսարան 209",
+					"begin": 665000,
 					"duration": 2400000,
 					"recess": 300000
 				},
 				{
-					"title": "Հանրահաշիվ (դասախ.)",
-					"description": "Լսարան NaN",
-					"begin": 46200000,
+					"title": "Հանրահաշիվ (դաս.)",
+					"description": "Լսարան 204",
+					"begin": 770000,
+					"duration": 2400000,
+					"recess": 300000
+				},
+				{
+					"title": "Իրավունք (դաս.)",
+					"description": "Լսարան 100",
+					"begin": 870000,
+					"duration": 2400000,
+					"recess": 300000
+				},
+				{
+					"title": "Սոցիոլոգիա (դաս.)",
+					"description": "Լսարան ???",
+					"begin": 965000,
 					"duration": 2400000,
 					"recess": 300000
 				}
@@ -56,16 +84,37 @@
 			"title": "Չորեքշաբթի",
 			"subjects": [
 				{
-					"title": "Մաթեմատիկական անալիզ (դասախ.)",
-					"description": "Լսարան NaN",
-					"begin": 34200000,
+					"title": "Մաթ. անալիզ (դաս.)",
+					"description": "Լսարան 114",
+					"begin": 570000,
 					"duration": 2400000,
 					"recess": 300000
 				},
 				{
-					"title": "Տվյալների կառուցվածքներ (դասախ.)",
-					"description": "Լսարան NaN",
-					"begin": 46200000,
+					"title": "Ֆիզկուլտուրա",
+					"description": "Մարզադահլիճ",
+					"begin": 665000,
+					"duration": 2400000,
+					"recess": 300000
+				},
+				{
+					"title": "Տվյալների կառուց. (դաս.)",
+					"description": "Լսարան 204",
+					"begin": 770000,
+					"duration": 2400000,
+					"recess": 300000
+				},
+				{
+					"title": "Մշակութաբանություն (դաս.)",
+					"description": "Լսարան 108",
+					"begin": 870000,
+					"duration": 2400000,
+					"recess": 300000
+				},
+				{
+					"title": "Բարոյագիտություն (դաս.)",
+					"description": "Լսարան ???",
+					"begin": 965000,
 					"duration": 2400000,
 					"recess": 300000
 				}
@@ -75,23 +124,37 @@
 			"title": "Հինգշաբթի",
 			"subjects": [
 				{
-					"title": "Տվյալների կառուցվածքներ (գործ.)",
-					"description": "Լսարան NaN",
-					"begin": 34200000,
+					"title": "Տվյալների կառուց. (գոր.)",
+					"description": "Լսարան 217",
+					"begin": 570000,
+					"duration": 570000,
+					"recess": 300000
+				},
+				{
+					"title": "Օպեր. համակարգեր (դաս.)",
+					"description": "Լսարան ???",
+					"begin": 665000,
 					"duration": 2400000,
 					"recess": 300000
 				},
 				{
-					"title": "Օպերացիոն համակարգեր (դասախ.)",
-					"description": "Լսարան NaN",
-					"begin": 39900000,
+					"title": "Մաթ. անալիզ (դաս.)",
+					"description": "Լսարան 305",
+					"begin": 770000,
 					"duration": 2400000,
 					"recess": 300000
 				},
 				{
-					"title": "Մաթեմատիկական անալիզ (դասախ.)",
-					"description": "Լսարան NaN",
-					"begin": 46200000,
+					"title": "Հոգեբանություն (դաս.)",
+					"description": "Լսարան 104 / 106",
+					"begin": 870000,
+					"duration": 2400000,
+					"recess": 300000
+				},
+				{
+					"title": "???",
+					"description": "Լսարան 106",
+					"begin": 965000,
 					"duration": 2400000,
 					"recess": 300000
 				}
@@ -101,16 +164,23 @@
 			"title": "Ուրբաթ",
 			"subjects": [
 				{
-					"title": "Հանրահաշիվ (դասախ.)",
-					"description": "Լսարան NaN",
-					"begin": 39900000,
+					"title": "Հանրահաշիվ (դաս.)",
+					"description": "Լսարան",
+					"begin": 665000,
 					"duration": 2400000,
 					"recess": 300000
 				},
 				{
-					"title": "Հանրահաշիվ (գործ.)",
-					"description": "Լսարան NaN",
-					"begin": 46200000,
+					"title": "Հանրահաշիվ (գոր.)",
+					"description": "Լսարան",
+					"begin": 770000,
+					"duration": 2400000,
+					"recess": 300000
+				},
+				{
+					"title": "Տրամաբանություն (դաս.)",
+					"description": "Լսարան",
+					"begin": 870000,
 					"duration": 2400000,
 					"recess": 300000
 				}
