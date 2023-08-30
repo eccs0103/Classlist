@@ -20,6 +20,11 @@ try {
 		throw new TypeError(`Invalid element: ${spanScheduleInformation}`);
 	}
 
+	const buttonDownloadSchedule = document.querySelector(`button#download-schedule`);
+	if (!(buttonDownloadSchedule instanceof HTMLButtonElement)) {
+		throw new TypeError(`Invalid element: ${buttonDownloadSchedule}`);
+	}
+
 	const buttonRemoveSchedule = document.querySelector(`button#remove-schedule`);
 	if (!(buttonRemoveSchedule instanceof HTMLButtonElement)) {
 		throw new TypeError(`Invalid element: ${buttonRemoveSchedule}`);
@@ -78,6 +83,13 @@ try {
 				reject(error);
 			}
 		}));
+	});
+
+	buttonDownloadSchedule.addEventListener(`click`, (event) => {
+		const schedule = archivePreview.data;
+		if (schedule !== null) {
+			Manager.download(new File([JSON.stringify(schedule.notation)], schedule.title));
+		}
 	});
 
 	buttonRemoveSchedule.addEventListener(`click`, async (event) => {

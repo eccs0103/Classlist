@@ -194,6 +194,10 @@ Workweek.export(workweek); // Your required data
 ```
 
 ## Feed
+### Update 1.0.1
+- Added the ability to download the database.
+- Improved the upload algorithm.
+
 ### Update 1.0.0
 - Added theme customization.
 - Added date and description settings for tasks.

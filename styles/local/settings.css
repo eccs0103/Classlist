@@ -11,19 +11,15 @@ main {
 }
 
 div#schedule-panel {
-	display: grid;
-	grid-template-columns: 1fr;
 	padding: var(--size-serpator);
 	gap: var(--size-serpator);
 }
 
-div#schedule-panel[data-connected] {
-	grid-template-columns: 1fr max-content;
-	background-color: var(--color-highlight);
-}
-
 label[for="upload-schedule"] {
+	width: 100%;
 	overflow-x: hidden;
+	border-top-left-radius: var(--size-gap);
+	border-bottom-left-radius: var(--size-gap);
 }
 
 div#schedule-panel:not([data-connected]) label[for="upload-schedule"] {
@@ -35,7 +31,16 @@ span#schedule-information {
 	overflow-x: hidden;
 }
 
-div#schedule-panel:not([data-connected]) button#remove-schedule {
+div#schedule-panel > *:last-child {
+	border-top-right-radius: var(--size-gap);
+	border-bottom-right-radius: var(--size-gap);
+}
+
+div#schedule-panel[data-connected] > *:not(button#remove-schedule) {
+	background-color: var(--color-highlight);
+}
+
+div#schedule-panel:not([data-connected]) > *:not(label[for="upload-schedule"]) {
 	display: none !important;
 }
 

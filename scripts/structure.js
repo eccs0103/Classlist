@@ -122,6 +122,10 @@ class Subject {
 	 * @param {any} source 
 	 */
 	static import(source) {
+		if (typeof (source) !== `object`) {
+			throw new TypeError(`Source has invalid ${typeof (source)} type`);
+		}
+
 		const title = Reflect.get(source, `title`);
 		if (typeof (title) !== `string`) {
 			throw new TypeError(`Property title has invalid ${typeof (title)} type`);
@@ -321,6 +325,10 @@ class Weekday {
 	 * @param {any} source 
 	 */
 	static import(source) {
+		if (typeof (source) !== `object`) {
+			throw new TypeError(`Source has invalid ${typeof (source)} type`);
+		}
+
 		const title = Reflect.get(source, `title`);
 		if (typeof (title) !== `string`) {
 			throw new TypeError(`Property title has invalid ${typeof (title)} type`);
@@ -416,6 +424,10 @@ class Workweek {
 	 * @param {any} source 
 	 */
 	static import(source) {
+		if (typeof (source) !== `object`) {
+			throw new TypeError(`Source has invalid ${typeof (source)} type`);
+		}
+
 		const $weekdays = Reflect.get(source, `weekdays`);
 		if (!($weekdays instanceof Array)) {
 			throw new TypeError(`Property weekdays has invalid ${($weekdays)} type`);
