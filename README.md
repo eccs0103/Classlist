@@ -192,6 +192,7 @@ const workweek = new Workweek(
 );
 Workweek.export(workweek); // Your required data
 ```
+
 ## Feed
 ### Update 1.0.0
 - Added theme customization.
