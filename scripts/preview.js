@@ -12,6 +12,7 @@ void async function () {
 				throw new TypeError(`Invalid element: ${divContainer}`);
 			}
 			const h4Subtitle = divContainer.appendChild(document.createElement(`h4`));
+			h4Subtitle.hidden = !settings.dates;
 			const h2Title = divContainer.appendChild(document.createElement(`h2`));
 			const h4Description = divContainer.appendChild(document.createElement(`h4`));
 			return [divContainer, h4Subtitle, h2Title, h4Description];
@@ -91,10 +92,7 @@ void async function () {
 				const [divContainer, h4Subtitle, h2Title, h4Description] = groups[index];
 				const activity = classlist.get(current + index);
 
-				h4Subtitle.innerText = (settings.dates ?
-					new Date(unfix(activity.begin)).toLocaleDateString() :
-					``
-				);
+				h4Subtitle.innerText = new Date(unfix(activity.begin)).toLocaleDateString();
 				h4Description.innerText = ``;
 				if (activity instanceof Freedom) {
 					h2Title.innerText = `Դասեր չկան`;
