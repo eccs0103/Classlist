@@ -165,21 +165,21 @@
 			"subjects": [
 				{
 					"title": "Հանրահաշիվ (դաս.)",
-					"description": "Լսարան",
+					"description": "Լսարան 204",
 					"begin": 665000,
 					"duration": 2400000,
 					"recess": 300000
 				},
 				{
 					"title": "Հանրահաշիվ (գոր.)",
-					"description": "Լսարան",
+					"description": "Լսարան 111",
 					"begin": 770000,
 					"duration": 2400000,
 					"recess": 300000
 				},
 				{
 					"title": "Տրամաբանություն (դաս.)",
-					"description": "Լսարան",
+					"description": "Լսարան 106",
 					"begin": 870000,
 					"duration": 2400000,
 					"recess": 300000
