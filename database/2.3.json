@@ -4,23 +4,30 @@
 			"title": "Երկուշաբթի",
 			"subjects": [
 				{
-					"title": "ՏԱ հիմունքներ (դասախ.)",
-					"description": "Լսարան NaN",
-					"begin": 34200000,
-					"duration": 2400000,
-					"recess": 300000
-				},
-				{
-					"title": "Տվյալների կառուցվածքներ (գործ.)",
-					"description": "Լսարան NaN",
+					"title": "Տվ. կառուցվածքներ (գոր.)",
+					"description": "Լսարան 205",
 					"begin": 39900000,
 					"duration": 2400000,
 					"recess": 300000
 				},
 				{
-					"title": "Տվյալների կառուցվածքներ (դասախ.)",
-					"description": "Լսարան NaN",
+					"title": "Տվ. կառուցվածքներ (դաս.)",
+					"description": "Լսարան 206",
 					"begin": 46200000,
+					"duration": 2400000,
+					"recess": 300000
+				},
+				{
+					"title": "Տնտեսագիտություն",
+					"description": "Լսարան 108",
+					"begin": 52200000,
+					"duration": 2400000,
+					"recess": 300000
+				},
+				{
+					"title": "Կրոնագիտություն",
+					"description": "Լսարան 108",
+					"begin": 57900000,
 					"duration": 2400000,
 					"recess": 300000
 				}
@@ -30,23 +37,30 @@
 			"title": "Երեքշաբթի",
 			"subjects": [
 				{
-					"title": "Հաշվողական համակարգեր (գործ.)",
-					"description": "Լսարան NaN",
+					"title": "Հաշվ. համակարգեր (գոր.)",
+					"description": "Լսարան 216",
 					"begin": 34200000,
 					"duration": 2400000,
 					"recess": 300000
 				},
 				{
-					"title": "Կոմպլեքս անալիզ (գործ.)",
-					"description": "Լսարան NaN",
+					"title": "Կոմպլեքս անալիզ (գոր.)",
+					"description": "Լսարան 113",
 					"begin": 39900000,
 					"duration": 2400000,
 					"recess": 300000
 				},
 				{
-					"title": "Ընդհանուր հանրահաշիվ (դասախ.)",
-					"description": "Լսարան NaN",
+					"title": "Ընդհ. հանրահաշիվ (դաս.)",
+					"description": "Լսարան 206",
 					"begin": 46200000,
+					"duration": 2400000,
+					"recess": 300000
+				},
+				{
+					"title": "ՏԱ հիմունքներ (դաս.)",
+					"description": "Լսարան 206",
+					"begin": 52200000,
 					"duration": 2400000,
 					"recess": 300000
 				}
@@ -56,9 +70,16 @@
 			"title": "Չորեքշաբթի",
 			"subjects": [
 				{
-					"title": "Հայոց պատմություն (դասախ.)",
-					"description": "Լսարան NaN",
+					"title": "Հայոց պատմություն (դաս.)",
+					"description": "Լսարան 315",
 					"begin": 46200000,
+					"duration": 2400000,
+					"recess": 300000
+				},
+				{
+					"title": "Մշակ. / Տրամ. (դաս.)",
+					"description": "Լսարան 108",
+					"begin": 52200000,
 					"duration": 2400000,
 					"recess": 300000
 				}
@@ -68,23 +89,37 @@
 			"title": "Հինգշաբթի",
 			"subjects": [
 				{
-					"title": "Ընդհանուր հանրահաշիվ (դասախ.)",
-					"description": "Լսարան NaN",
+					"title": "Ընդ. հանրահաշիվ (դաս.)",
+					"description": "Լսարան 114",
 					"begin": 34200000,
 					"duration": 2400000,
 					"recess": 300000
 				},
 				{
 					"title": "Փիլիսոփայություն (սեմ.)",
-					"description": "Լսարան NaN",
+					"description": "Լսարան 215",
 					"begin": 39900000,
 					"duration": 2400000,
 					"recess": 300000
 				},
 				{
-					"title": "Կոմպլեքս անալիզ (դասախ.)",
-					"description": "Լսարան NaN",
+					"title": "Կոմպլեքս անալիզ (դաս.)",
+					"description": "Լսարան 108",
 					"begin": 46200000,
+					"duration": 2400000,
+					"recess": 300000
+				},
+				{
+					"title": "Հոգեբանություն (դաս.)",
+					"description": "Լսարան 101",
+					"begin": 52200000,
+					"duration": 2400000,
+					"recess": 300000
+				},
+				{
+					"title": "ՏՏ կիր. հիմունքներ (գոր.)",
+					"description": "Լսարան 106",
+					"begin": 57900000,
 					"duration": 2400000,
 					"recess": 300000
 				}
@@ -94,22 +129,22 @@
 			"title": "Ուրբաթ",
 			"subjects": [
 				{
-					"title": "Ընդհանուր հանրահաշիվ (գործ.)",
-					"description": "Լսարան NaN",
+					"title": "Ընդ. հանրահաշիվ (գոր.)",
+					"description": "Լսարան 101",
 					"begin": 34200000,
 					"duration": 2400000,
 					"recess": 300000
 				},
 				{
-					"title": "Հաշվողական համակարգեր (դասախ.)",
-					"description": "Լսարան NaN",
+					"title": "Հաշ. համակարգեր (դաս.)",
+					"description": "Լսարան 108",
 					"begin": 39900000,
 					"duration": 2400000,
 					"recess": 300000
 				},
 				{
-					"title": "Փիլիսոփայություն (դասախ.)",
-					"description": "Լսարան NaN",
+					"title": "Փիլիսոփայություն (դաս.)",
+					"description": "Լսարան 108",
 					"begin": 46200000,
 					"duration": 2400000,
 					"recess": 300000
