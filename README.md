@@ -1,3 +1,9 @@
+<style>
+* {
+	tab-size: 4;
+}
+</style>
+
 # Classlist
 
 ## Information
@@ -5,7 +11,7 @@ Automatically configured schedule.
 
 ## Guide
 To work with the program, you will need a schedule. The schedule should be structured as a JSON file according to the following schema:
-```typescript
+```ts
 interface Lesson { // Structure of individual lessons, similar to those taught in school
 	title: String, // Lesson title
 	description: String, // Lesson description
@@ -31,7 +37,7 @@ interface Workweek { // Structure of a study period, typically a week, but can d
 }
 ```
 One of the simplest examples of a JSON structure is provided below:
-```json
+```jsonc
 {
 	"weekdays": [
 		{
@@ -162,7 +168,7 @@ One of the simplest examples of a JSON structure is provided below:
 }
 ```
 As an alternative, you can use the internal engine of the program to quickly generate a JSON file from your schedule using the console.
-```javascript
+```js
 const workweek = new Workweek(
 	new Weekday(`Monday`,
 		new Pair(`Introduction to Programming`, `Audience 101`, Timespan.parse(`09:30:00`).duration, Timespan.parse(`00:40:00`).duration, Timespan.parse(`00:05:00`).duration),
@@ -194,23 +200,26 @@ Workweek.export(workweek); // Your required data
 ```
 
 ## Feed
-### Update 1.0.1
+### Update 1.0.2 (02.09.2023)
+- Core updated.
+
+### Update 1.0.1 (31.08.2023)
 - Added the ability to download the database.
 - Improved the upload algorithm.
 
-### Update 1.0.0
+### Update 1.0.0 (29.08.2023)
 - Added theme customization.
 - Added date and description settings for tasks.
 - Added the option to reset to factory settings.
 - Improved color correction to support both themes.
 
-### Update 0.9.3
+### Update 0.9.3 (29.08.2023)
 - Added database management capability.
 
-### Update 0.9.0
+### Update 0.9.0 (28.08.2023)
 - Added list saving functionality.
 - Added database support.
 
-### Update 0.8.0
+### Update 0.8.0 (27.08.2023)
 - Core updated.
 - Fixed errors.
