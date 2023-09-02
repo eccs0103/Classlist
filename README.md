@@ -1,9 +1,3 @@
-<style>
-* {
-	tab-size: 4;
-}
-</style>
-
 # Classlist
 
 ## Information
