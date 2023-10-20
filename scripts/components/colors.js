@@ -102,7 +102,7 @@ class Color {
 	 */
 	static tryParse(source) {
 		let result = null;
-		for (const [format, deep] of Object.values(ColorFormats).flatMap((format) => (/** @type {Array<[String, Boolean]>} */ ([[format, false], [format, true]])))) {
+		for (const [format, deep] of Object.values(ColorFormats).flatMap((format) => (/** @type {[String, Boolean][]} */ ([[format, false], [format, true]])))) {
 			try {
 				result = Color.parse(source, format, deep);
 				break;
@@ -249,9 +249,10 @@ class Color {
 	 * @param {Number} angle 
 	 */
 	static rotate(source, angle) {
-		const temp = Math.trunc(source.#hue + angle) % 361;
-		source.hue = (temp < 0) ? temp + 360 : temp;
-		return source;
+		const clone = source.clone();
+		const temp = Math.trunc(clone.#hue + angle) % 361;
+		clone.hue = (temp < 0) ? temp + 360 : temp;
+		return clone;
 	}
 	/**
 	 * @param {Color} source 
@@ -259,8 +260,9 @@ class Color {
 	 */
 	static saturate(source, scale) {
 		if (scale < 0 || scale > 1) throw new RangeError(`Property 'scale' out of range: ${scale}`);
-		source.saturation = 100 * scale;
-		return source;
+		const clone = source.clone();
+		clone.saturation = 100 * scale;
+		return clone;
 	}
 	/**
 	 * @param {Color} source 
@@ -268,8 +270,9 @@ class Color {
 	 */
 	static illuminate(source, scale) {
 		if (scale < 0 || scale > 1) throw new RangeError(`Property 'scale' out of range: ${scale}`);
-		source.lightness = 100 * scale;
-		return source;
+		const clone = source.clone();
+		clone.lightness = 100 * scale;
+		return clone;
 	}
 	/**
 	 * @param {Color} source 
@@ -277,8 +280,9 @@ class Color {
 	 */
 	static pass(source, scale) {
 		if (scale < 0 || scale > 1) throw new RangeError(`Property 'scale' out of range: ${scale}`);
-		source.alpha = scale;
-		return source;
+		const clone = source.clone();
+		clone.alpha = scale;
+		return clone;
 	}
 	//#endregion
 	//#region Properties

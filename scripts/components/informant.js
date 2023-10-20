@@ -11,19 +11,54 @@ class Informant {
 		Informant.#dialogConsole = dialogConsole;
 	}
 	/**
-	 * @param {Object} [object]
+	 * @param {any} item 
+	 * @returns {String}
 	 */
-	static log(object) {
-		if (object === undefined && Informant.#dialogConsole.open) {
+	static #logify(item, level = 0) {
+		const prefix = `  `.repeat(level);
+		switch (typeof (item)) {
+			case `number`:
+			case `bigint`:
+			case `boolean`:
+			case `string`: {
+				return `${item}`;
+			}
+			case `object`: {
+				let result = ``;
+				for (const key in item) {
+					const value = item[key];
+					result += `\n${prefix}${key}: ${Informant.#logify(value, level + 1)}`;
+				}
+				return result;
+			}
+			default: throw new TypeError(`Invalid value ${typeof (item)} type`);
+		}
+	}
+	/**
+	 * @param {any} value
+	 */
+	static log(value) {
+		if (value === undefined && Informant.#dialogConsole.open) {
 			Informant.#dialogConsole.open = false;
-		} else if (object !== undefined && !Informant.#dialogConsole.open) {
+		} else if (value !== undefined && !Informant.#dialogConsole.open) {
 			Informant.#dialogConsole.open = true;
 		}
-		if (object !== undefined && Informant.#dialogConsole.open) {
-			Informant.#dialogConsole.replaceChildren(...Object.entries(object).flat().map((item) => {
-				const span = document.createElement(`span`);
-				span.innerText = item;
-				return span;
+		if (value !== undefined && Informant.#dialogConsole.open) {
+			Informant.#dialogConsole.replaceChildren(...Informant.#logify(value).trim().split(`\n`).map((line) => {
+				const [key, value] = line.split(/(?<=\:)\s+/, 3);
+				const divLine = document.createElement(`div`);
+				divLine.classList.add(`contents`);
+				const spanKey = divLine.appendChild(document.createElement(`span`));
+				spanKey.classList.add(`-key`);
+				const spanValue = divLine.appendChild(document.createElement(`span`));
+				spanValue.classList.add(`-value`);
+				if (value) {
+					spanKey.textContent = key;
+					spanValue.textContent = value;
+				} else {
+					spanValue.textContent = key;
+				}
+				return divLine;
 			}));
 		}
 	}

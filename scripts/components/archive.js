@@ -1,17 +1,17 @@
 "use strict";
 
 /**
- * @template Notation 
+ * @template T 
  */
 class Archive {
 	/**
 	 * @param {String} key 
-	 * @param {Notation} [initial] 
+	 * @param {T} initial
 	 */
 	constructor(key, initial) {
 		this.#key = key;
 		if (localStorage.getItem(this.#key) === null) {
-			localStorage.setItem(this.#key, JSON.stringify((initial === undefined ? `` : initial), undefined, `\t`));
+			this.data = initial;
 		}
 	}
 	/** @type {String} */ #key;
@@ -20,13 +20,13 @@ class Archive {
 		if (item === null) {
 			throw new ReferenceError(`Key '${this.#key}' isn't defined.`);
 		}
-		return (/** @type {Notation} */ (JSON.parse(item)));
+		return (/** @type {T} */ (JSON.parse(item)));
 	}
 	set data(value) {
 		localStorage.setItem(this.#key, JSON.stringify(value, undefined, `\t`));
 	}
 	/**
-	 * @param {(value: Notation) => Notation} action 
+	 * @param {(value: T) => T} action 
 	 */
 	change(action) {
 		this.data = action(this.data);
