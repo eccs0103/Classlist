@@ -1,11 +1,14 @@
-// @ts-ignore
-/** @typedef {import("./components/archive.js")} */
-// @ts-ignore
-/** @typedef {import("./components/manager.js")} */
-// @ts-ignore
-/** @typedef {import("./components/timespan.js")} */
-
 "use strict";
+
+import {
+	NotationProgenitor,
+	NotationContainer,
+	Archive
+} from "./modules/storage.js";
+import {
+	Timespan
+} from "./modules/time.js";
+import { } from "./modules/extensions.js";
 
 //#region Activity
 class Activity extends Timespan {
@@ -585,35 +588,11 @@ class Settings {
 }
 //#endregion
 //#region Metadata
-const metaAuthor = document.querySelector(`meta[name="author"]`);
-if (!(metaAuthor instanceof HTMLMetaElement)) {
-	throw new TypeError(`Invalid element: ${metaAuthor}`);
-}
-const developer = metaAuthor.content;
-
-const metaApplicationName = document.querySelector(`meta[name="application-name"]`);
-if (!(metaApplicationName instanceof HTMLMetaElement)) {
-	throw new TypeError(`Invalid element: ${metaApplicationName}`);
-}
-const title = metaApplicationName.content;
-
-const search = Manager.getSearch();
-const reset = search.get(`reset`);
-if (reset !== undefined) {
-	if (reset === `all`) {
-		for (let index = 0; index < localStorage.length; index++) {
-			const value = localStorage.key(index);
-			if (value === null) {
-				throw new RangeError(`Index out of range`);
-			}
-			localStorage.removeItem(value);
-		}
-	} else {
-		localStorage.removeItem(reset);
-	}
-}
-
-/** @type {Archive<SettingsNotation>} */ const archiveSettings = new Archive(`${developer}.${title}.Settings`, Settings.export(new Settings()));
+const developer = document.getElement(HTMLMetaElement, `meta[name="author"]`).content;
+const title = document.getElement(HTMLMetaElement, `meta[name="application-name"]`).content;
+const search = location.getSearchMap();
+const container = new NotationContainer(Settings, `${developer}.${title}.Settings`);
+const settings = container.content;
 /**
  * @typedef Schedule
  * @property {String} title
@@ -621,7 +600,19 @@ if (reset !== undefined) {
  * @property {WorkweekNotation} notation
  */
 /** @type {Archive<Schedule?>} */ const archivePreview = new Archive(`${developer}.${title}.Preview`, null);
-
-const settings = Settings.import(archiveSettings.data);
 document.documentElement.dataset[`theme`] = settings.theme;
 //#endregion
+
+export {
+	Timespan,
+	Freedom,
+	Recess,
+	Task,
+	Workweek,
+	Classlist,
+	Settings,
+	search,
+	container,
+	settings,
+	archivePreview
+};

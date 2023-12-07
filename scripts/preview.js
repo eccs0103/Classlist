@@ -1,7 +1,16 @@
-// @ts-ignore
-/** @typedef {import("./structure.js")} */
-
 "use strict";
+
+import {
+	Classlist,
+	Freedom,
+	Recess,
+	Task,
+	Timespan,
+	Workweek,
+	archivePreview,
+	search,
+	settings
+} from "./structure.js";
 
 void async function () {
 	try {
@@ -39,7 +48,7 @@ void async function () {
 			case undefined: break;
 			case `210`:
 			case `2.3`: {
-				await Manager.load(new Promise(async (resolve, reject) => {
+				await window.load(new Promise(async (resolve, reject) => {
 					try {
 						const name = `${schedule}.json`;
 						const response = await fetch(`../database/${name}`);
@@ -56,7 +65,7 @@ void async function () {
 		}
 
 		if (archivePreview.data === null) {
-			await Manager.alert(`Schedule not detected. Upload it in settings to continue`);
+			await window.alertAsync(`Schedule not detected. Upload it in settings to continue`);
 			location.assign(`./settings.html`);
 			return;
 		}
@@ -138,6 +147,6 @@ void async function () {
 		});
 		//#endregion
 	} catch (error) {
-		Manager.prevent(error);
+		document.prevent(document.analysis(error));
 	}
 }();

@@ -194,6 +194,10 @@ Workweek.export(workweek); // Your required data
 ```
 
 ## Feed
+### Обновление 1.0.4 (07.12.2023)
+- Ядро обновлено.
+- 
+
 ### Update 1.0.3 (20.10.2023)
 - Core updated.
 
